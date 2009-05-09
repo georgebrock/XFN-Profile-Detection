@@ -169,7 +169,7 @@ XFNDiscovery.UI = {
 			.before(
 				$("<div/>")
 					.addClass("working")
-					.append("<span>Looking for more profiles&hellip;</span>")
+					.append("<span>Looking for more profiles&#8230;</span>")
 			);
 	},
 
