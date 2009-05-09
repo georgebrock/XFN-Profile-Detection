@@ -155,7 +155,9 @@ XFNDiscovery.UI = {
 				.append($iframe);
 
 			for(var i = 0, p; p = XFNDiscovery.profiles[i]; i++)
+			{
 				XFNDiscovery.UI.discoveredProfile(p);
+			}
 
 			XFNDiscovery.discoverMoreProfiles();
 		}
