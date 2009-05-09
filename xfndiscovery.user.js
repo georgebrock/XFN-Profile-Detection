@@ -16,9 +16,23 @@ var XFNDiscovery = {
 		{
 			XFNDiscovery.profiles.push($(this).attr("href"));
 		});
+
+		XFNDiscovery.UI.init();
 	}
 
 };
+
+XFNDiscovery.UI = {
+
+	init: function()
+	{
+		if(XFNDiscovery.profiles.length == 0)
+			return;
+
+		$("body").append("<div>Oooh, profiles</div>");
+	}
+
+}
 
 $(function()
 {
