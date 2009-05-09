@@ -7,12 +7,11 @@
 	font-family: sans-serif;
 	font-size: small;
 	text-align:right;
-	opacity: 0.8;
 }
 
 #xfn-discovery div.content
 {
-	background:#000;
+	background:rgba(0,0,0,0.8);
 	color:#fff;
 	text-align:left;
 	padding:1em 0;
@@ -24,7 +23,7 @@
 	display: inline-block;
 	line-height: 2em;
 	color: #fff;
-	background: #d00;
+	background: rgba(221,0,0,0.8);
 	padding: 0 1em;
 	cursor:pointer;
 }
