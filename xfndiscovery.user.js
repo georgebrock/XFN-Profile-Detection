@@ -14,9 +14,11 @@ var XFNDiscovery = {
 
 	init: function()
 	{
-		$("[rel*=me][href^=http]").each(function()
+		$("[rel][href^=http]").each(function()
 		{
-			XFNDiscovery.profiles.push($(this).attr("href"));
+			var rel = " " + $(this).attr("rel") + " ";
+			if(/ me /.exec(rel))
+				XFNDiscovery.profiles.push($(this).attr("href"));
 		});
 
 		XFNDiscovery.UI.init();
