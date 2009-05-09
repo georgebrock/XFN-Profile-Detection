@@ -19,6 +19,13 @@ var XFNDiscovery = {
 		});
 
 		XFNDiscovery.UI.init();
+	},
+
+	discoverMoreProfiles: function()
+	{
+		XFNDiscovery.UI.startedDiscoveringMoreProfiles();
+		//TODO: Profile discovery
+		XFNDiscovery.UI.finishedDiscoveringMoreProfiles();
 	}
 
 };
@@ -81,9 +88,26 @@ XFNDiscovery.UI = {
 				.append("<h4>More user profiles</h4>")
 				.append($profileList)
 				.append($iframe);
+
+			XFNDiscovery.discoverMoreProfiles();
 		}
 		
 		$content.slideToggle();
+	},
+
+	startedDiscoveringMoreProfiles: function()
+	{
+		XFNDiscovery.UI.$container.find("ul.profiles")
+			.append(
+				$("<li/>")
+					.addClass("working")
+					.append("<span>Looking for more profiles&hellip;</span>")
+			);
+	},
+
+	finishedDiscoveringMoreProfiles: function()
+	{
+		XFNDiscovery.UI.$container.find("ul.profiles li.working").remove();
 	}
 
 }
