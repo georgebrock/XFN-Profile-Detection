@@ -24,8 +24,56 @@ var XFNDiscovery = {
 	discoverMoreProfiles: function()
 	{
 		XFNDiscovery.UI.startedDiscoveringMoreProfiles();
-		//TODO: Profile discovery
-		XFNDiscovery.UI.finishedDiscoveringMoreProfiles();
+
+		XFNDiscovery.uncrawledProfiles = [];
+		XFNDiscovery.crawledProfiles = [];
+
+		for(var i = 0, u; u = XFNDiscovery.profiles[i]; i++)
+			XFNDiscovery.uncrawledProfiles.push(u);
+
+		XFNDiscovery.crawlNextProfile();
+	},
+
+	crawlNextProfile: function()
+	{
+		if(XFNDiscovery.uncrawledProfiles.length == 0)
+		{
+			XFNDiscovery.UI.finishedDiscoveringMoreProfiles();
+			return;
+		}
+
+		var url = XFNDiscovery.uncrawledProfiles.pop();
+		XFNDiscovery.crawledProfiles.push(url);
+
+		var query = "select href from html where url='"+url+"' and xpath='//a[@rel]' and (rel='me' or rel like 'me %' or rel like '% me' or rel like '% me %')"
+		XFNDiscovery.queryYQL(query, function(data)
+		{
+			if(typeof data.error == "undefined")
+			{
+				var links = data.query.results.a;
+				for(var i = 0, link; link = links[i]; i++)
+				{
+					if(
+						link.href.match(/^http:\/\//) &&
+						$.inArray(link.href, XFNDiscovery.crawledProfiles) == -1 &&
+						$.inArray(link.href, XFNDiscovery.uncrawledProfiles) == -1
+					)
+					{
+						XFNDiscovery.uncrawledProfiles.push(link.href);
+						XFNDiscovery.UI.discoveredProfile(link.href);
+					}
+				}
+			}
+
+			XFNDiscovery.crawlNextProfile();
+		});
+	},
+
+	queryYQL: function(query, callback)
+	{
+		var callbackName = "xfndiscovery" + new Date().getTime();
+		unsafeWindow[callbackName] = callback;
+		$.get("http://query.yahooapis.com/v1/public/yql?q="+escape(query)+"&format=json&callback="+escape(callbackName), {}, function(){}, "jsonp");
 	}
 
 };
@@ -70,15 +118,6 @@ XFNDiscovery.UI = {
 			var $profileList = $("<ul/>")
 				.addClass("profiles");
 
-			for(var i = 0, p; p = XFNDiscovery.profiles[i]; i++)
-			{
-				var $pLink = $("<a/>")
-					.append(p.replace(/^http:\/\//, ""))
-					.attr("href", p);
-				$pLink.get(0).target = "xfn-discovery-frame";
-				$profileList.append($("<li/>").append($pLink));
-			}
-
 			var $iframe = $("<iframe/>")
 				.attr("id", "xfn-discovery-frame")
 				.attr("name", "xfn-discovery-frame")
@@ -88,6 +127,9 @@ XFNDiscovery.UI = {
 				.append("<h4>More user profiles</h4>")
 				.append($profileList)
 				.append($iframe);
+
+			for(var i = 0, p; p = XFNDiscovery.profiles[i]; i++)
+				XFNDiscovery.UI.discoveredProfile(p);
 
 			XFNDiscovery.discoverMoreProfiles();
 		}
@@ -105,9 +147,23 @@ XFNDiscovery.UI = {
 			);
 	},
 
+	discoveredProfile: function(url)
+	{
+		var $pLink = $("<a/>")
+			.append(url.replace(/^http:\/\//, ""))
+			.attr("href", url);
+		$pLink.get(0).target = "xfn-discovery-frame";
+
+		XFNDiscovery.UI.$container.find("ul.profiles").append($("<li/>").append($pLink));
+	},
+
 	finishedDiscoveringMoreProfiles: function()
 	{
-		XFNDiscovery.UI.$container.find("ul.profiles li.working").remove();
+		XFNDiscovery.UI.$container.find("ul.profiles li.working")
+			.animate({opacity:0, height:0, paddingTop:0, paddingBottom:0}, "slow", function()
+			{
+				$(this).remove();
+			});
 	}
 
 }
