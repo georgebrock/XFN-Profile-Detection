@@ -154,7 +154,11 @@ XFNDiscovery.UI = {
 			.attr("href", url);
 		$pLink.get(0).target = "xfn-discovery-frame";
 
-		XFNDiscovery.UI.$container.find("ul.profiles").append($("<li/>").append($pLink));
+		XFNDiscovery.UI.$container.find("ul.profiles").append(
+			$("<li/>")
+				.append($pLink)
+				.fadeIn()
+		);
 	},
 
 	finishedDiscoveringMoreProfiles: function()
