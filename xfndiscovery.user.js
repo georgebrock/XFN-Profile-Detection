@@ -133,7 +133,12 @@ XFNDiscovery.UI = {
 		if($content.html() == "")
 		{
 			var $profileList = $("<ul/>")
-				.addClass("profiles");
+				.addClass("profiles")
+				.addClass("known");
+
+			var $unknownProfileList = $("<ul/>")
+				.addClass("profiles")
+				.addClass("unknown");
 
 			var $iframe = $("<iframe/>")
 				.attr("id", "xfn-discovery-frame")
@@ -144,6 +149,7 @@ XFNDiscovery.UI = {
 			$content
 				.append("<h4>More user profiles</h4>")
 				.append($profileList)
+				.append($unknownProfileList)
 				.append($iframe);
 
 			for(var i = 0, p; p = XFNDiscovery.profiles[i]; i++)
@@ -157,7 +163,7 @@ XFNDiscovery.UI = {
 
 	startedDiscoveringMoreProfiles: function()
 	{
-		XFNDiscovery.UI.$container.find("ul.profiles")
+		XFNDiscovery.UI.$container.find("ul.profiles.known")
 			.before(
 				$("<div/>")
 					.addClass("working")
@@ -182,7 +188,7 @@ XFNDiscovery.UI = {
 
 		$pLink.get(0).target = "xfn-discovery-frame";
 
-		XFNDiscovery.UI.$container.find("ul.profiles").append(
+		XFNDiscovery.UI.$container.find("ul.profiles."+(service ? "known" : "unknown")).append(
 			$("<li/>")
 				.append($pLink)
 				.fadeIn()
