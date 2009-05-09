@@ -168,11 +168,18 @@ XFNDiscovery.UI = {
 	discoveredProfile: function(url)
 	{
 		var service = XFNDiscovery.serviceForURL(url);
-		//TODO: Change the UI if we have a service for this URL
 
 		var $pLink = $("<a/>")
 			.append(url.replace(/^http:\/\//, ""))
 			.attr("href", url);
+
+		if(service)
+		{
+			$pLink
+				.html(service.textForLink(url))
+				.addClass(service.class);
+		}
+
 		$pLink.get(0).target = "xfn-discovery-frame";
 
 		XFNDiscovery.UI.$container.find("ul.profiles").append(
