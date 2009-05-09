@@ -1,12 +1,16 @@
-a#xfn-discovery-trigger
+#xfn-discovery
 {
 	position: absolute;
-	display: block;
 	top: 0;
 	right: 1em;
+	font-family: sans-serif;
+}
+
+#xfn-discovery a.trigger
+{
+	display: block;
 	line-height: 2em;
 	color: #fff;
 	background: #d00;
 	padding: 0 1em;
-	font-family: sans-serif;
 }

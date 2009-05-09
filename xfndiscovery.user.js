@@ -37,12 +37,20 @@ XFNDiscovery.UI = {
 				.attr("href", GM_getResourceURL("stylesheet"))
 		);
 
-		$("body").append(
-			$("<a/>")
-				.attr("id", "xfn-discovery-trigger")
-				.append("More user profiles")
-				.click(XFNDiscovery.UI.trigger)
-		);
+		this.$container = $("<div/>")
+			.attr("id", "xfn-discovery")
+			.append(
+				$("<div/>")
+					.addClass("content")
+				)
+			.append(
+				$("<a/>")
+					.addClass("trigger")
+					.append("More user profiles")
+					.click(XFNDiscovery.UI.trigger)
+				);
+
+		$("body").append(this.$container);
 	},
 
 	trigger: function()
