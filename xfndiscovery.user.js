@@ -48,7 +48,7 @@ var XFNDiscovery = {
 		var query = "select href from html where url='"+url+"' and xpath='//a[@rel]' and (rel='me' or rel like 'me %' or rel like '% me' or rel like '% me %')"
 		XFNDiscovery.queryYQL(query, function(data)
 		{
-			if(typeof data.error == "undefined" && typeof data.query.results == "object")
+			if(typeof data.error == "undefined" && typeof data.query.results == "object" && data.query.results != null)
 			{
 				var links = data.query.results.a;
 				for(var i = 0, link; link = links[i]; i++)
