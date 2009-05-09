@@ -175,5 +175,8 @@ XFNDiscovery.UI = {
 
 $(function()
 {
+	if(unsafeWindow.top != unsafeWindow)
+		return;
+
 	XFNDiscovery.init();
 })
