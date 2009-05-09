@@ -6,3 +6,15 @@
 // @require       http://code.jquery.com/jquery-latest.js
 // ==/UserScript==
 
+var XFNDiscovery = {
+
+	init: function()
+	{
+	}
+
+};
+
+$(function()
+{
+	XFNDiscovery.init();
+})
