@@ -8,8 +8,14 @@
 
 var XFNDiscovery = {
 
+	profiles: [],
+
 	init: function()
 	{
+		$("[rel*=me][href^=http]").each(function()
+		{
+			XFNDiscovery.profiles.push($(this).attr("href"));
+		});
 	}
 
 };
