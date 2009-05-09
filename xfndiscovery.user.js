@@ -4,6 +4,7 @@
 // @description   Discover a user's oter profiles using the magic of XFN
 // @include       *
 // @require       http://code.jquery.com/jquery-latest.js
+// @resource      stylesheet xfndiscovery.css
 // ==/UserScript==
 
 var XFNDiscovery = {
@@ -29,7 +30,12 @@ XFNDiscovery.UI = {
 		if(XFNDiscovery.profiles.length == 0)
 			return;
 
-		$("body").append("<div>Oooh, profiles</div>");
+		$("head").append(
+			$("<link/>")
+				.attr("rel", "stylesheet")
+				.attr("type", "text/css")
+				.attr("href", GM_getResourceURL("stylesheet"))
+		);
 	}
 
 }
