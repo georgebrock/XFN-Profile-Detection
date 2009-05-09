@@ -140,8 +140,8 @@ XFNDiscovery.UI = {
 	startedDiscoveringMoreProfiles: function()
 	{
 		XFNDiscovery.UI.$container.find("ul.profiles")
-			.append(
-				$("<li/>")
+			.before(
+				$("<div/>")
 					.addClass("working")
 					.append("<span>Looking for more profiles&hellip;</span>")
 			);
@@ -163,7 +163,7 @@ XFNDiscovery.UI = {
 
 	finishedDiscoveringMoreProfiles: function()
 	{
-		XFNDiscovery.UI.$container.find("ul.profiles li.working")
+		XFNDiscovery.UI.$container.find("div.working")
 			.animate({opacity:0, height:0, paddingTop:0, paddingBottom:0}, "slow", function()
 			{
 				$(this).remove();
