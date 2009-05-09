@@ -198,7 +198,7 @@ XFNDiscovery.UI = {
 	finishedDiscoveringMoreProfiles: function()
 	{
 		XFNDiscovery.UI.$container.find("div.working")
-			.animate({opacity:0, height:0, paddingTop:0, paddingBottom:0}, "slow", function()
+			.fadeOut("slow", function()
 			{
 				$(this).remove();
 			});
