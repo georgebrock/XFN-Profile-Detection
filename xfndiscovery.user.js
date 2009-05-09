@@ -10,6 +10,7 @@
 var XFNDiscovery = {
 
 	profiles: [],
+	services: [],
 
 	init: function()
 	{
@@ -67,6 +68,11 @@ var XFNDiscovery = {
 
 			XFNDiscovery.crawlNextProfile();
 		});
+	},
+
+	registerService: function(service)
+	{
+		XFNDiscovery.services.push(service);
 	},
 
 	queryYQL: function(query, callback)
