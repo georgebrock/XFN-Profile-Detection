@@ -48,7 +48,7 @@ var XFNDiscovery = {
 		var url = XFNDiscovery.uncrawledProfiles.pop();
 		XFNDiscovery.crawledProfiles.push(url);
 
-		var query = "select href from html where url='"+url+"' and xpath='//a[@rel]' and (rel='me' or rel like 'me %' or rel like '% me' or rel like '% me %')"
+		var query = "select href from html where url='"+url+"' and xpath='//a[contains(concat(\" \",@rel,\" \"), \" me \")]'"
 		XFNDiscovery.queryYQL(query, function(data)
 		{
 			if(typeof data.error == "undefined" && typeof data.query.results == "object" && data.query.results != null)
