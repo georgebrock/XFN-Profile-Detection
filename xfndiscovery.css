@@ -2,20 +2,20 @@
 {
 	position: absolute;
 	top: 0;
-	right: 1em;
+	right: 0;
+	width:100%;
 	font-family: sans-serif;
 	font-size: small;
 	text-align:right;
-	opacity: 0.75;
+	opacity: 0.8;
 }
 
 #xfn-discovery div.content
 {
 	background:#000;
 	color:#fff;
-	padding:1em;
-	min-width:20em;
 	text-align:left;
+	padding:1em 0;
 }
 
 #xfn-discovery a.trigger
@@ -32,5 +32,40 @@
 {
 	font-size:1em;
 	font-weight:bold;
-	margin:0;
+	margin:0 1em;
+}
+
+#xfn-discovery ul.profiles
+{
+	margin:1em 0 0 0;
+	padding:0;
+	list-style:none;
+	width:25%;
+	float:left;
+}
+
+#xfn-discovery ul.profiles a
+{
+	display:block;
+	line-height:2em;
+	color:#fff;
+	text-decoration:none;
+	padding:0 1em;
+}
+
+#xfn-discovery ul.profiles a:hover,
+#xfn-discovery ul.profiles a:focus,
+#xfn-discovery ul.profiles a:active
+{
+	background:#eee;
+	color:#000;
+}
+
+#xfn-discovery iframe
+{
+	border:none;
+	background-color:#fff;
+	margin:1em 0 0 0;
+	width:75%;
+	min-height:480px;
 }

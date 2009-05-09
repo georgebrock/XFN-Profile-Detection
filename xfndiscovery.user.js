@@ -60,19 +60,27 @@ XFNDiscovery.UI = {
 		
 		if($content.html() == "")
 		{
-			var $profileList = $("<ul/>");
+			var $profileList = $("<ul/>")
+				.addClass("profiles");
+
 			for(var i = 0, p; p = XFNDiscovery.profiles[i]; i++)
-				$profileList.append(
-					$("<li/>").append(
-						$("<a/>")
-							.append(p)
-							.attr("href", p)
-						)
-					);
+			{
+				var $pLink = $("<a/>")
+					.append(p.replace(/^http:\/\//, ""))
+					.attr("href", p);
+				$pLink.get(0).target = "xfn-discovery-frame";
+				$profileList.append($("<li/>").append($pLink));
+			}
+
+			var $iframe = $("<iframe/>")
+				.attr("id", "xfn-discovery-frame")
+				.attr("name", "xfn-discovery-frame")
+				.attr("src", "about:blank");
 
 			$content
 				.append("<h4>More user profiles</h4>")
-				.append($profileList);
+				.append($profileList)
+				.append($iframe);
 		}
 		
 		$content.slideToggle();
