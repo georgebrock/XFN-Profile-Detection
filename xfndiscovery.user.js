@@ -37,11 +37,12 @@ XFNDiscovery.UI = {
 				.attr("href", GM_getResourceURL("stylesheet"))
 		);
 
-		this.$container = $("<div/>")
+		XFNDiscovery.UI.$container = $("<div/>")
 			.attr("id", "xfn-discovery")
 			.append(
 				$("<div/>")
 					.addClass("content")
+					.hide()
 				)
 			.append(
 				$("<a/>")
@@ -50,12 +51,17 @@ XFNDiscovery.UI = {
 					.click(XFNDiscovery.UI.trigger)
 				);
 
-		$("body").append(this.$container);
+		$("body").append(XFNDiscovery.UI.$container);
 	},
 
 	trigger: function()
 	{
-		alert("STUB");
+		var $content = XFNDiscovery.UI.$container.children("div.content");
+		
+		if($content.html() == "")
+			$content.append("Content here");
+		
+		$content.slideToggle();
 	}
 
 }
