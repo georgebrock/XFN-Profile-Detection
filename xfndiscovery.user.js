@@ -217,12 +217,77 @@ $(function()
 XFNDiscovery.registerService({
 	name: "Twitter",
 	class: "twitter",
-	urlPattern: /^http:\/\/(www\.)?twitter\.com\/[^\/]+$/,
+	urlPattern: /^http:\/\/(www\.)?twitter\.com\/[^\/]+\/?$/,
 
 	textForLink: function(url)
 	{
-		var parts = /^http:\/\/(www\.)?twitter\.com\/([^\/]+)$/.exec(url);
-		console.log(parts);
-		return parts ? "@"+parts[2]+" on Twitter" : url;
+		var parts = /^http:\/\/(www\.)?twitter\.com\/([^\/]+)\/?$/.exec(url);
+		return parts ? "Twitter (@"+parts[2]+")" : url;
+	}
+});
+
+XFNDiscovery.registerService({
+	name: "Last.fm",
+	class: "lastfm",
+	urlPattern: /^http:\/\/(www\.)?last\.fm\/user\/[^\/]+\/?$/,
+
+	textForLink: function(url)
+	{
+		var parts = /^http:\/\/(www\.)?last\.fm\/user\/([^\/]+)\/?$/.exec(url);
+		return parts ? "Last.fm ("+parts[2]+")" : url;
+	}
+});
+
+XFNDiscovery.registerService({
+	name: "Delicious",
+	class: "delicious",
+	urlPattern: /^http:\/\/(www\.)?delicious\.com\/[^\/]+\/?$/,
+
+	textForLink: function(url)
+	{
+		var parts = /^http:\/\/(www\.)?delicious\.com\/([^\/]+)\/?$/.exec(url);
+		return parts ? "Delicious ("+parts[2]+")" : url;
+	}
+});
+
+XFNDiscovery.registerService({
+	name: "GitHub",
+	class: "github",
+	urlPattern: /^http:\/\/(www\.)?github\.com\/[^\/]+\/?$/,
+
+	textForLink: function(url)
+	{
+		var parts = /^http:\/\/(www\.)?github\.com\/([^\/]+)\/?$/.exec(url);
+		return parts ? "GitHub ("+parts[2]+")" : url;
+	}
+});
+
+XFNDiscovery.registerService({
+	name: "Flickr",
+	class: "flickr",
+	urlPattern: /^http:\/\/(www\.)?flickr\.com\/(people|photos)\/[^\/]+\/?$/,
+
+	textForLink: function(url)
+	{
+		var parts = /^http:\/\/(www\.)?flickr\.com\/(people|photos)\/([^\/]+)\/?$/.exec(url);
+		if(parts)
+		{
+			var txt = "Flickr";
+			if(!/^[0-9]+@N[0-9]+$/.exec(parts[3]))
+				txt += " (" + parts[3] + ")"
+			return txt;
+		}
+		return url;
+	}
+});
+
+XFNDiscovery.registerService({
+	name: "Upcoming",
+	class: "upcoming",
+	urlPattern: /^http:\/\/upcoming.yahoo.com\/user\/[^\/]+\/?$/,
+
+	textForLink: function(url)
+	{
+		return "Upcoming";
 	}
 });
