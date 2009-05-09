@@ -79,7 +79,7 @@ var XFNDiscovery = {
 	{
 		for(var i = 0, s; s = XFNDiscovery.services[i]; i++)
 		{
-			if(s.isProfileURL(url))
+			if(s.urlPattern.exec(url))
 				return s;
 		}
 
@@ -200,3 +200,16 @@ $(function()
 
 	XFNDiscovery.init();
 })
+
+XFNDiscovery.registerService({
+	name: "Twitter",
+	class: "twitter",
+	urlPattern: /^http:\/\/(www\.)?twitter\.com\/[^\/]+$/,
+
+	textForLink: function(url)
+	{
+		var parts = /^http:\/\/(www\.)?twitter\.com\/([^\/]+)$/.exec(url);
+		console.log(parts);
+		return parts ? "@"+parts[2]+" on Twitter" : url;
+	}
+});
