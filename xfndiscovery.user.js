@@ -36,6 +36,18 @@ XFNDiscovery.UI = {
 				.attr("type", "text/css")
 				.attr("href", GM_getResourceURL("stylesheet"))
 		);
+
+		$("body").append(
+			$("<a/>")
+				.attr("id", "xfn-discovery-trigger")
+				.append("More user profiles")
+				.click(XFNDiscovery.UI.trigger)
+		);
+	},
+
+	trigger: function()
+	{
+		alert("STUB");
 	}
 
 }

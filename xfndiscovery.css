@@ -1,0 +1,12 @@
+a#xfn-discovery-trigger
+{
+	position: absolute;
+	display: block;
+	top: 0;
+	right: 1em;
+	line-height: 2em;
+	color: #fff;
+	background: #d00;
+	padding: 0 1em;
+	font-family: sans-serif;
+}
