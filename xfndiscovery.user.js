@@ -75,6 +75,17 @@ var XFNDiscovery = {
 		XFNDiscovery.services.push(service);
 	},
 
+	serviceForURL: function(url)
+	{
+		for(var i = 0, s; s = XFNDiscovery.services[i]; i++)
+		{
+			if(s.isProfileURL(url))
+				return s;
+		}
+
+		return null;
+	},
+
 	queryYQL: function(query, callback)
 	{
 		var callbackName = "xfndiscovery" + new Date().getTime();
@@ -156,6 +167,9 @@ XFNDiscovery.UI = {
 
 	discoveredProfile: function(url)
 	{
+		var service = XFNDiscovery.serviceForURL(url);
+		//TODO: Change the UI if we have a service for this URL
+
 		var $pLink = $("<a/>")
 			.append(url.replace(/^http:\/\//, ""))
 			.attr("href", url);
