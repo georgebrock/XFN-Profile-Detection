@@ -59,7 +59,21 @@ XFNDiscovery.UI = {
 		var $content = XFNDiscovery.UI.$container.children("div.content");
 		
 		if($content.html() == "")
-			$content.append("Content here");
+		{
+			var $profileList = $("<ul/>");
+			for(var i = 0, p; p = XFNDiscovery.profiles[i]; i++)
+				$profileList.append(
+					$("<li/>").append(
+						$("<a/>")
+							.append(p)
+							.attr("href", p)
+						)
+					);
+
+			$content
+				.append("<h4>More user profiles</h4>")
+				.append($profileList);
+		}
 		
 		$content.slideToggle();
 	}
