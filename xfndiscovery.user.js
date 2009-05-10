@@ -551,8 +551,8 @@ XFNDiscovery.registerService(new XFNDiscovery.Service(
 
 XFNDiscovery.registerService(new XFNDiscovery.Service(
 	"YouTube",
-	/^http:\/\/(www\.)?youtube\.com\/user\/([^\/]+)\/?/, 2,
-	function(parts) { return "http://www.youtube.com/user/"+parts[2].toLowerCase(); }
+	/^http:\/\/(www\.)?youtube\.com\/(user\/|profile\?user=)([^\/]+)\/?/, 3,
+	function(parts) { return "http://www.youtube.com/user/"+parts[3].toLowerCase(); }
 	));
 
 XFNDiscovery.registerService(new XFNDiscovery.Service(
