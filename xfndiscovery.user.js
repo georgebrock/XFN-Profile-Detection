@@ -358,7 +358,7 @@ XFNDiscovery.registerService({
 	canonicalURL: function(url)
 	{
 		var parts = /^http:\/\/(www\.)?flickr\.com\/(people|photos)\/([^\/]+)\/?$/.exec(url);
-		return parts ? "http://www.flickr.com/people/" + parts[3] : url;
+		return parts ? "http://www.flickr.com/people/" + unescape(parts[3]) : url;
 	}
 });
 
