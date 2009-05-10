@@ -278,6 +278,16 @@ XFNDiscovery.UI = {
 
 		$pLink.get(0).target = "xfn-discovery-frame";
 
+		if(service && XFNDiscovery.UI.$container.find("ul.profiles.known a."+service.class).length > 0)
+		{
+			XFNDiscovery.UI.$container.find("ul.profiles.known a."+service.class+":last").parent().after(
+				$("<li/>")
+					.append($pLink)
+					.fadeIn()
+			);
+			return;
+		}
+
 		XFNDiscovery.UI.$container.find("ul.profiles."+(service ? "known" : "unknown")).append(
 			$("<li/>")
 				.append($pLink)
