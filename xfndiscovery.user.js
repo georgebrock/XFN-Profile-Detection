@@ -251,11 +251,15 @@ XFNDiscovery.UI = {
 			$content.slideDown(function()
 			{
 				XFNDiscovery.discoverMoreProfiles();
+				$("#xfn-discovery a.trigger").html("Hide");
 			});
 		}
 		else
 		{
-			$content.slideToggle();
+			$content.slideToggle(function()
+			{
+				$("#xfn-discovery a.trigger").html($(this).css("display") == "none" ? "More user profiles" : "Hide");
+			});
 		}
 	},
 
