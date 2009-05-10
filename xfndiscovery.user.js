@@ -396,3 +396,21 @@ XFNDiscovery.registerService({
 		return parts ? "http://www.mybloglog.com/buzz/members/"+parts[2].toLowerCase() : url;
 	}
 });
+
+XFNDiscovery.registerService({
+	name: "FriendFeed",
+	class: "friendfeed",
+	urlPattern: /^http:\/\/(www\.)?friendfeed.com\/([^\/]+)\/?/,
+
+	textForLink: function(url)
+	{
+		var parts = this.urlPattern.exec(url);
+		return parts ? "FriendFeed ("+parts[2]+")" : url;
+	},
+
+	canonicalURL: function(url)
+	{
+		var parts = this.urlPattern.exec(url);
+		return parts ? "http://friendfeed.com/"+parts[2].toLowerCase() : url;
+	}
+});
