@@ -200,6 +200,10 @@ XFNDiscovery.UI = {
 				.addClass("unknown")
 				.hide();
 
+			var $iframeAlternative = $("<div><div class=\"inner\"></div></div>")
+				.attr("class", "iframe-alternative")
+				.hide();
+
 			var $iframe = $("<iframe/>")
 				.attr("id", "xfn-discovery-frame")
 				.attr("name", "xfn-discovery-frame")
@@ -208,10 +212,11 @@ XFNDiscovery.UI = {
 
 			$content
 				.append("<h4>More user profiles</h4>")
+				.append($iframe)
+				.append($iframeAlternative)
 				.append($profileList)
 				.append($unknownTitle)
-				.append($unknownProfileList)
-				.append($iframe);
+				.append($unknownProfileList);
 
 			for(var i = 0, p; p = XFNDiscovery.profiles[i]; i++)
 			{
@@ -247,6 +252,23 @@ XFNDiscovery.UI = {
 			$pLink
 				.html("<span></span> "+service.textForLink(url))
 				.addClass(service.class);
+		}
+
+		if(service && typeof service.click == "function")
+		{
+			$pLink.click(function()
+			{
+				return service.click($(this).attr("href"));
+			});
+		}
+		else
+		{
+			$pLink.click(function()
+			{
+				$("#xfn-discovery div.iframe-alternative").hide();
+				$("#xfn-discovery iframe").show();
+				return true;
+			});
 		}
 
 		$pLink.get(0).target = "xfn-discovery-frame";
@@ -292,6 +314,18 @@ XFNDiscovery.registerService({
 	{
 		var parts = this.urlPattern.exec(url);
 		return parts ? "http://twitter.com/"+parts[2] : url;
+	},
+
+	click: function(url)
+	{
+		var content = "<p>Unfortunately Twitter doesn't like to be embedded in another page.</p>" +
+			"<p><a href=\""+url+"\" target=\"_blank\">Open this Twitter profile in a new window.</a></p>";
+
+		$("#xfn-discovery iframe").hide();
+		$("#xfn-discovery div.iframe-alternative")
+			.find("div.inner").html(content).end()
+			.show();
+		return false;
 	}
 });
 
