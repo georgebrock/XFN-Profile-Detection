@@ -1,6 +1,6 @@
 # XFN Discovery
 
-A [Greasemonky](http://github.com/georgebrock/XFN-Profile-Detection/) script to help you find your friends' profiles.  Built at [Open Hack London 2009](http://openhacklondon.pbworks.com/)
+A [Greasemonkey](http://github.com/georgebrock/XFN-Profile-Detection/) script to help you find your friends' profiles.  Built at [Open Hack London 2009](http://openhacklondon.pbworks.com/)
 
 ### Installation
 If you have Greasemonkey installed, just go to this URL: [georgebrock.com/openhack2009/xfndiscovery.user.js](http://georgebrock.com/openhack2009/xfndiscovery.user.js)
