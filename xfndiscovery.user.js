@@ -575,3 +575,21 @@ XFNDiscovery.registerService({
 		return parts ? "http://www.slideshare.net/"+parts[2].toLowerCase() : url;
 	}
 });
+
+XFNDiscovery.registerService({
+	name: "Identi.ca",
+	class: "identica",
+	urlPattern: /^http:\/\/(www\.)?identi\.ca\/([^\/]+)\/?/,
+
+	textForLink: function(url)
+	{
+		var parts = this.urlPattern.exec(url);
+		return parts ? "Identi.ca ("+parts[2]+")" : url;
+	},
+
+	canonicalURL: function(url)
+	{
+		var parts = this.urlPattern.exec(url);
+		return parts ? "http://identi.ca/"+parts[2].toLowerCase() : url;
+	}
+});
