@@ -737,3 +737,57 @@ XFNDiscovery.registerService({
 		return parts ? "http://"+parts[1].toLowerCase()+".stumbleupon.com" : url;
 	}
 });
+
+XFNDiscovery.registerService({
+	name: "LoveFilm",
+	class: "lovefilm",
+	urlPattern: /^http:\/\/(www\.)?lovefilm\.com\/profile\/([^\/]+)\/?/,
+
+	textForLink: function(url)
+	{
+		var parts = this.urlPattern.exec(url);
+		return parts ? "LoveFilm ("+parts[2]+")" : url;
+	},
+
+	canonicalURL: function(url)
+	{
+		var parts = this.urlPattern.exec(url);
+		return parts ? "http://www.lovefilm.com/profile/"+parts[2].toLowerCase() : url;
+	}
+});
+
+XFNDiscovery.registerService({
+	name: "Wikipedia",
+	class: "wikipedia",
+	urlPattern: /^http:\/\/(en)\.wikipedia\.org\/wiki\/User:([^\/]+)\/?/,
+
+	textForLink: function(url)
+	{
+		var parts = this.urlPattern.exec(url);
+		return parts ? "Wikipedia ("+parts[2]+")" : url;
+	},
+
+	canonicalURL: function(url)
+	{
+		var parts = this.urlPattern.exec(url);
+		return parts ? "http://"+parts[1]+".wikipedia.org/wiki/User:"+parts[2] : url;
+	}
+});
+
+XFNDiscovery.registerService({
+	name: "YouTube",
+	class: "youtube",
+	urlPattern: /^http:\/\/(www\.)?youtube\.com\/user\/([^\/]+)\/?/,
+
+	textForLink: function(url)
+	{
+		var parts = this.urlPattern.exec(url);
+		return parts ? "YouTube ("+parts[2]+")" : url;
+	},
+
+	canonicalURL: function(url)
+	{
+		var parts = this.urlPattern.exec(url);
+		return parts ? "http://www.youtube.com/user/"+parts[2].toLowerCase() : url;
+	}
+});
