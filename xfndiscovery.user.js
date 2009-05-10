@@ -188,7 +188,7 @@ XFNDiscovery.UI = {
 				.addClass("unknown")
 				.append(
 				$("<a/>")
-					.append("Even more profiles")
+					.append("Even more profiles&#8230;")
 					.click(function()
 					{
 						$("#xfn-discovery ul.profiles.unknown").slideToggle("slow");
