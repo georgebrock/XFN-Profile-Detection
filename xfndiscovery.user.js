@@ -702,3 +702,20 @@ XFNDiscovery.registerService({
 	}
 });
 
+XFNDiscovery.registerService({
+	name: "Vimeo",
+	class: "vimeo",
+	urlPattern: /^http:\/\/(www\.)?vimeo\.com\/([^\/]+)\/?/,
+
+	textForLink: function(url)
+	{
+		var parts = this.urlPattern.exec(url);
+		return parts ? "Vimeo ("+parts[2]+")" : url;
+	},
+
+	canonicalURL: function(url)
+	{
+		var parts = this.urlPattern.exec(url);
+		return parts ? "http://vimeo.com/"+parts[2].toLowerCase() : url;
+	}
+});
