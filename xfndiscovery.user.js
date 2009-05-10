@@ -33,9 +33,9 @@ var XFNDiscovery = {
 		XFNDiscovery.uncrawledProfiles = [];
 		XFNDiscovery.crawledProfiles = [];
 
-		for(var i = 0, u; u = XFNDiscovery.profiles[i]; i++)
+		for(var i = 0; i < XFNDiscovery.profiles.length; i++)
 		{
-			XFNDiscovery.uncrawledProfiles.push(u);
+			XFNDiscovery.uncrawledProfiles.push(XFNDiscovery.profiles[i]);
 		}
 
 		XFNDiscovery.crawlNextProfile();
@@ -71,7 +71,7 @@ var XFNDiscovery = {
 
 	crawlNextProfile: function()
 	{
-		if(XFNDiscovery.uncrawledProfiles.length == 0)
+		if(XFNDiscovery.uncrawledProfiles.length === 0)
 		{
 			XFNDiscovery.readSocialGraph();
 			return;
@@ -80,15 +80,15 @@ var XFNDiscovery = {
 		var url = XFNDiscovery.uncrawledProfiles.pop();
 		XFNDiscovery.crawledProfiles.push(url);
 
-		var query = "select href from html where url='"+url+"' and xpath='//a[contains(concat(\" \",@rel,\" \"), \" me \")]'"
+		var query = "select href from html where url='"+url+"' and xpath='//a[contains(concat(\" \",@rel,\" \"), \" me \")]'";
 		XFNDiscovery.queryYQL(query, function(data)
 		{
-			if(typeof data.error == "undefined" && typeof data.query.results == "object" && data.query.results != null)
+			if(typeof data.error == "undefined" && typeof data.query.results == "object" && data.query.results !== null)
 			{
 				var links = data.query.results.a;
-				for(var i = 0, link; link = links[i]; i++)
+				for(var i = 0; i < links.length; i++)
 				{
-					XFNDiscovery.discoveredProfile(link.href);
+					XFNDiscovery.discoveredProfile(links[i].href);
 				}
 			}
 
@@ -112,7 +112,7 @@ var XFNDiscovery = {
 
 				for(inURL in data.nodes[url].nodes_referenced_by)
 				{
-					var inTypes = data.nodes[url].nodes_referenced_by[inURL].types
+					var inTypes = data.nodes[url].nodes_referenced_by[inURL].types;
 					if(
 						inTypes.length == 1 &&
 						inTypes[0] == "me" &&
@@ -124,7 +124,7 @@ var XFNDiscovery = {
 				}
 			}
 
-			if(XFNDiscovery.uncrawledProfiles.length == 0)
+			if(XFNDiscovery.uncrawledProfiles.length === 0)
 			{
 				XFNDiscovery.UI.finishedDiscoveringMoreProfiles();
 			}
@@ -132,7 +132,7 @@ var XFNDiscovery = {
 			{
 				XFNDiscovery.crawlNextProfile();
 			}
-		}
+		};
 
 		$.get(sgURL, {}, function(){}, "jsonp");
 	},
@@ -144,8 +144,9 @@ var XFNDiscovery = {
 
 	serviceForURL: function(url)
 	{
-		for(var i = 0, s; s = XFNDiscovery.services[i]; i++)
+		for(var i = 0; i < XFNDiscovery.services.length; i++)
 		{
+			var s = XFNDiscovery.services[i];
 			if(s.urlPattern.exec(url))
 			{
 				return s;
@@ -168,7 +169,7 @@ XFNDiscovery.UI = {
 
 	init: function()
 	{
-		if(XFNDiscovery.profiles.length == 0)
+		if(XFNDiscovery.profiles.length === 0)
 		{
 			return;
 		}
@@ -201,7 +202,7 @@ XFNDiscovery.UI = {
 	{
 		var $content = XFNDiscovery.UI.$container.children("div.content");
 		
-		if($content.html() == "")
+		if($content.html() === "")
 		{
 			var $profileList = $("<ul/>")
 				.addClass("profiles")
@@ -242,9 +243,9 @@ XFNDiscovery.UI = {
 				.append($unknownTitle)
 				.append($unknownProfileList);
 
-			for(var i = 0, p; p = XFNDiscovery.profiles[i]; i++)
+			for(var i = 0, p; i < XFNDiscovery.profiles.length; i++)
 			{
-				XFNDiscovery.UI.discoveredProfile(p);
+				XFNDiscovery.UI.discoveredProfile(XFNDiscovery.profiles[i]);
 			}
 
 			$content.slideDown(function()
@@ -253,7 +254,9 @@ XFNDiscovery.UI = {
 			});
 		}
 		else
+		{
 			$content.slideToggle();
+		}
 	},
 
 	startedDiscoveringMoreProfiles: function()
@@ -278,7 +281,7 @@ XFNDiscovery.UI = {
 		{
 			$pLink
 				.html("<span></span> "+service.textForLink(url))
-				.addClass(service.class);
+				.addClass(service.className);
 		}
 
 		if(service && typeof service.click == "function")
@@ -302,9 +305,9 @@ XFNDiscovery.UI = {
 
 		$pLink.get(0).target = "xfn-discovery-frame";
 
-		if(service && XFNDiscovery.UI.$container.find("ul.profiles.known a."+service.class).length > 0)
+		if(service && XFNDiscovery.UI.$container.find("ul.profiles.known a."+service.className).length > 0)
 		{
-			XFNDiscovery.UI.$container.find("ul.profiles.known a."+service.class+":last").parent().after(
+			XFNDiscovery.UI.$container.find("ul.profiles.known a."+service.className+":last").parent().after(
 				$("<li/>")
 					.append($pLink)
 					.fadeIn()
@@ -329,13 +332,13 @@ XFNDiscovery.UI = {
 				$(this).remove();
 			});
 
-		if($("#xfn-discovery ul.profiles.known li").length == 0)
+		if($("#xfn-discovery ul.profiles.known li").length === 0)
 		{
 			$("#xfn-discovery ul.profiles.unknown").show();
 		}
 	}
 
-}
+};
 
 $(function()
 {
@@ -345,12 +348,12 @@ $(function()
 	}
 
 	XFNDiscovery.init();
-})
+});
 
 XFNDiscovery.Service = function(name, urlPattern, usernamePart, canonicalGenerator, click)
 {
 	this.name = name;
-	this.class = name.toLowerCase().replace(/[^a-z]/g, "");
+	this.className = name.toLowerCase().replace(/[^a-z]/g, "");
 	this.urlPattern = urlPattern;
 	this.usernamePart = usernamePart;
 	this.canonicalGenerator = canonicalGenerator;
@@ -390,7 +393,7 @@ XFNDiscovery.Service.prototype = {
 XFNDiscovery.registerService(new XFNDiscovery.Service(
 		"Twitter", 
 		/^http:\/\/(www\.)?twitter\.com\/([^\/]+)(\/(friends|favorites))?\/?$/, 2, 
-		function(parts) { return "http://twitter.com/"+parts[2].toLowerCase() },
+		function(parts) { return "http://twitter.com/"+parts[2].toLowerCase(); },
 		function(url)
 		{
 			var content = "<p>Unfortunately Twitter doesn't like to be embedded in another page.</p>" +
