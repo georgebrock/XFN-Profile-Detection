@@ -324,470 +324,196 @@ $(function()
 	XFNDiscovery.init();
 })
 
-XFNDiscovery.registerService({
-	name: "Twitter",
-	class: "twitter",
-	urlPattern: /^http:\/\/(www\.)?twitter\.com\/([^\/]+)(\/(friends|favorites))?\/?$/,
+XFNDiscovery.Service = function(name, urlPattern, usernamePart, canonicalGenerator, click)
+{
+	this.name = name;
+	this.class = name.toLowerCase().replace(/[^a-z]/g, "");
+	this.urlPattern = urlPattern;
+	this.usernamePart = usernamePart;
+	this.canonicalGenerator = canonicalGenerator;
+	if(typeof click == "function")
+		this.click = click;
+};
+
+XFNDiscovery.Service.prototype = {
 
 	textForLink: function(url)
 	{
 		var parts = this.urlPattern.exec(url);
-		return parts ? "Twitter (@"+parts[2]+")" : url;
+		if(!parts) return url;
+
+		var text = this.name;
+		if(this.usernamePart > 0)
+			text += " (" + parts[this.usernamePart] + ")";
+
+		return text;
 	},
 
 	canonicalURL: function(url)
 	{
 		var parts = this.urlPattern.exec(url);
-		return parts ? "http://twitter.com/"+parts[2].toLowerCase() : url;
-	},
-
-	click: function(url)
-	{
-		var content = "<p>Unfortunately Twitter doesn't like to be embedded in another page.</p>" +
-			"<p><a href=\""+url+"\" target=\"_blank\">Open this Twitter profile in a new window.</a></p>";
-
-		$("#xfn-discovery iframe").hide();
-		$("#xfn-discovery div.iframe-alternative")
-			.find("div.inner").html(content).end()
-			.show();
-		return false;
+		return parts ? this.canonicalGenerator(parts) : url;
 	}
-});
 
-XFNDiscovery.registerService({
-	name: "Last.fm",
-	class: "lastfm",
-	urlPattern: /^http:\/\/(www\.)?(last\.fm|lastfm\.(com\.)?[a-z]+)\/user\/([^\/\?]+)\/?(\?setlang=[a-z]+)?$/,
+};
 
-	textForLink: function(url)
-	{
-		var parts = this.urlPattern.exec(url);
-		return parts ? "Last.fm ("+parts[4]+")" : url;
-	},
-
-	canonicalURL: function(url)
-	{
-		var parts = this.urlPattern.exec(url);
-		return parts ? "http://www.last.fm/user/" + parts[4] : url;
-	}
-});
-
-XFNDiscovery.registerService({
-	name: "Delicious",
-	class: "delicious",
-	urlPattern: /^http:\/\/((www\.)?delicious\.com|del\.icio\.us)\/[^\/]+\/?$/,
-
-	textForLink: function(url)
-	{
-		var parts = /^http:\/\/((www\.)?delicious\.com|del\.icio\.us)\/([^\/]+)\/?$/.exec(url);
-		console.log(parts);
-		return parts ? "Delicious ("+parts[3]+")" : url;
-	},
-
-	canonicalURL: function(url)
-	{
-		var parts = /^http:\/\/((www\.)?delicious\.com|del\.icio\.us)\/([^\/]+)\/?$/.exec(url);
-		return parts ? "http://delicious.com/" + parts[3] : url;
-	}
-});
-
-XFNDiscovery.registerService({
-	name: "GitHub",
-	class: "github",
-	urlPattern: /^http:\/\/(www\.)?github\.com\/[^\/]+\/?$/,
-
-	textForLink: function(url)
-	{
-		var parts = /^http:\/\/(www\.)?github\.com\/([^\/]+)\/?$/.exec(url);
-		return parts ? "GitHub ("+parts[2]+")" : url;
-	},
-
-	canonicalURL: function(url)
-	{
-		var parts = /^http:\/\/(www\.)?github\.com\/([^\/]+)\/?$/.exec(url);
-		return parts ? "http://github.com/" + parts[2] : url;
-	}
-});
-
-XFNDiscovery.registerService({
-	name: "Flickr",
-	class: "flickr",
-	urlPattern: /^http:\/\/(www\.)?flickr\.com\/(people|photos)\/([^\/]+)(\/contacts)?\/?$/,
-
-	textForLink: function(url)
-	{
-		var parts = this.urlPattern.exec(url);
-		if(parts)
+XFNDiscovery.registerService(new XFNDiscovery.Service(
+		"Twitter", 
+		/^http:\/\/(www\.)?twitter\.com\/([^\/]+)(\/(friends|favorites))?\/?$/, 2, 
+		function(parts) { return "http://twitter.com/"+parts[2].toLowerCase() },
+		function(url)
 		{
-			var txt = "Flickr";
-			if(!/^[0-9]+@N[0-9]+$/.exec(parts[3]))
-				txt += " (" + parts[3] + ")"
-			return txt;
+			var content = "<p>Unfortunately Twitter doesn't like to be embedded in another page.</p>" +
+				"<p><a href=\""+url+"\" target=\"_blank\">Open this Twitter profile in a new window.</a></p>";
+
+			$("#xfn-discovery iframe").hide();
+			$("#xfn-discovery div.iframe-alternative")
+				.find("div.inner").html(content).end()
+				.show();
+			return false;
 		}
-		return url;
-	},
+	));
 
-	canonicalURL: function(url)
-	{
-		var parts = this.urlPattern.exec(url);
-		return parts ? "http://www.flickr.com/people/" + unescape(parts[3]) : url;
-	}
-});
+XFNDiscovery.registerService(new XFNDiscovery.Service(
+		"Last.fm",
+		/^http:\/\/(www\.)?(last\.fm|lastfm\.(com\.)?[a-z]+)\/user\/([^\/\?]+)\/?(\?setlang=[a-z]+)?$/, 4,
+		function(parts) { return "http://www.last.fm/user/" + parts[4].toLowerCase(); }
+	));
 
-XFNDiscovery.registerService({
-	name: "Upcoming",
-	class: "upcoming",
-	urlPattern: /^http:\/\/upcoming.yahoo.com\/user\/[^\/]+\/?$/,
+XFNDiscovery.registerService(new XFNDiscovery.Service(
+		"Delicious",
+		/^http:\/\/((www\.)?delicious\.com|del\.icio\.us)\/([^\/]+)\/?$/, 3,
+		function(parts) { return "http://delicious.com/" + parts[3].toLowerCase(); }
+	));
 
-	textForLink: function(url)
-	{
-		return "Upcoming";
-	},
+XFNDiscovery.registerService(new XFNDiscovery.Service(
+		"GitHub",
+		/^http:\/\/(www\.)?github\.com\/([^\/]+)\/?$/, 2,
+		function(parts) { return "http://github.com/" + parts[2].toLowerCase(); }
+	));
 
-	canonicalURL: function(url)
-	{
-		var parts = /^http:\/\/upcoming.yahoo.com\/user\/([^\/]+)\/?$/.exec(url);
-		return parts ? "http://upcoming.yahoo.com/user/" + parts[1] : url;
-	}
-});
+XFNDiscovery.registerService(new XFNDiscovery.Service(
+		"Flickr",
+		/^http:\/\/(www\.)?flickr\.com\/(people|photos)\/([^\/]+)(\/contacts)?\/?$/, 3,
+		function(parts) { return "http://www.flickr.com/people/" + unescape(parts[3]); }
+	));
 
-XFNDiscovery.registerService({
-	name: "MyBlogLog",
-	class: "mybloglog",
-	urlPattern: /^http:\/\/(www\.)?mybloglog\.com\/buzz\/members\/([^\/]+)(\/(contacts|pics))?\/?$/,
+XFNDiscovery.registerService(new XFNDiscovery.Service(
+		"Upcoming",
+		/^http:\/\/upcoming.yahoo.com\/user\/([^\/]+)\/?$/, 0,
+		function(parts) { return "http://upcoming.yahoo.com/user/" + parts[1]; }
+	));
 
-	textForLink: function(url)
-	{
-		var parts = this.urlPattern.exec(url);
-		return parts ? "MyBlogLog ("+parts[2]+")" : url;
-	},
+XFNDiscovery.registerService(new XFNDiscovery.Service(
+		"MyBlogLog",
+		/^http:\/\/(www\.)?mybloglog\.com\/buzz\/members\/([^\/]+)(\/(contacts|pics))?\/?$/, 2,
+		function(parts) { return "http://www.mybloglog.com/buzz/members/"+parts[2].toLowerCase(); }
+	));
 
-	canonicalURL: function(url)
-	{
-		var parts = this.urlPattern.exec(url);
-		return parts ? "http://www.mybloglog.com/buzz/members/"+parts[2].toLowerCase() : url;
-	}
-});
+XFNDiscovery.registerService(new XFNDiscovery.Service(
+		"FriendFeed",
+		/^http:\/\/(www\.)?(ff\.im|friendfeed\.com)\/([^\/]+)\/?/, 3,
+		function(parts) { return "http://friendfeed.com/"+parts[3].toLowerCase(); }
+	));
 
-XFNDiscovery.registerService({
-	name: "FriendFeed",
-	class: "friendfeed",
-	urlPattern: /^http:\/\/(www\.)?(ff\.im|friendfeed\.com)\/([^\/]+)\/?/,
+XFNDiscovery.registerService(new XFNDiscovery.Service(
+		"Get Satisfaction",
+		/^http:\/\/(www\.)?(getsfn|getsatisfaction).com\/people\/([^\/]+)\/?/, 3,
+		function(parts) { return "http://getsatisfaction.com/people/"+parts[3].toLowerCase(); }
+	));
 
-	textForLink: function(url)
-	{
-		var parts = this.urlPattern.exec(url);
-		return parts ? "FriendFeed ("+parts[3]+")" : url;
-	},
+XFNDiscovery.registerService(new XFNDiscovery.Service(
+		"Facebook",
+		/^http:\/\/(www\.)?facebook.com\/(people\/[^\/]+\/|profile\.php\?id=)([0-9]+)?/, 0,
+		function(parts) { return "http://www.facebook.com/profile.php?id="+parts[3]; }
+	));
 
-	canonicalURL: function(url)
-	{
-		var parts = this.urlPattern.exec(url);
-		return parts ? "http://friendfeed.com/"+parts[3].toLowerCase() : url;
-	}
-});
+XFNDiscovery.registerService(new XFNDiscovery.Service(
+		"Dopplr",
+		/^http:\/\/(www\.)?dopplr.com\/traveller\/([^\/]+)\/?/, 2,
+		function(parts) { return "http://www.dopplr.com/traveller/"+parts[2].toLowerCase(); }
+	));
 
-XFNDiscovery.registerService({
-	name: "Get Satisfaction",
-	class: "getsatisfaction",
-	urlPattern: /^http:\/\/(www\.)?(getsfn|getsatisfaction).com\/people\/([^\/]+)\/?/,
+XFNDiscovery.registerService(new XFNDiscovery.Service(
+	"Linked in",
+	/^http:\/\/(www\.)?linkedin.com\/in\/([^\/]+)\/?/, 2,
+	function(parts) { return "http://www.linkedin.com/in/"+parts[2].toLowerCase(); }
+	));
 
-	textForLink: function(url)
-	{
-		var parts = this.urlPattern.exec(url);
-		return parts ? "Get Satisfaction ("+parts[3]+")" : url;
-	},
+XFNDiscovery.registerService(new XFNDiscovery.Service(
+	"Slideshare",
+	/^http:\/\/(www\.)?slideshare\.net\/([^\/]+)\/?/, 2,
+	function(parts) { return "http://www.slideshare.net/"+parts[2].toLowerCase(); }
+	));
 
-	canonicalURL: function(url)
-	{
-		var parts = this.urlPattern.exec(url);
-		return parts ? "http://getsatisfaction.com/people/"+parts[3].toLowerCase() : url;
-	}
-});
+XFNDiscovery.registerService(new XFNDiscovery.Service(
+	"Identi.ca",
+	/^http:\/\/(www\.)?identi\.ca\/([^\/]+)\/?/, 2,
+	function(parts) { return "http://identi.ca/"+parts[2].toLowerCase(); }
+	));
 
-XFNDiscovery.registerService({
-	name: "Facebook",
-	class: "facebook",
-	urlPattern: /^http:\/\/(www\.)?facebook.com\/(people\/[^\/]+\/|profile\.php\?id=)([0-9]+)?/,
+XFNDiscovery.registerService(new XFNDiscovery.Service(
+	"97 Bottles",
+	/^http:\/\/((www|dev)\.)?97bottles.com\/people\/([^\/]+)\/?/, 3,
+	function(parts) { return "http://97bottles.com/people/"+parts[3].toLowerCase(); }
+	));
 
-	textForLink: function(url)
-	{
-		return "Facebook";
-	},
+XFNDiscovery.registerService(new XFNDiscovery.Service(
+	"The Ten Word Review",
+	/^http:\/\/(www\.)?thetenwordreview\.com\/users\/([^\/]+)\/?/, 2,
+	function(parts) { return "http://thetenwordreview.com/users/"+parts[2].toLowerCase(); }
+	));
 
-	canonicalURL: function(url)
-	{
-		var parts = this.urlPattern.exec(url);
-		return parts ? "http://www.facebook.com/profile.php?id="+parts[3] : url;
-	}
-});
+XFNDiscovery.registerService(new XFNDiscovery.Service(
+	"Bright Kite",
+	/^http:\/\/(www\.)?brightkite\.com\/people\/([^\/]+)\/?/, 2,
+	function(parts) { return "http://brightkite.com/people/"+parts[2].toLowerCase(); }
+	));
 
-XFNDiscovery.registerService({
-	name: "Dopplr",
-	class: "dopplr",
-	urlPattern: /^http:\/\/(www\.)?dopplr.com\/traveller\/([^\/]+)\/?/,
+XFNDiscovery.registerService(new XFNDiscovery.Service(
+	"Pownce",
+	/^http:\/\/(www\.)?pownce\.com\/([^\/]+)\/?/, 2,
+	function(parts) { return "http://pownce.com/"+parts[2].toLowerCase(); }
+	));
 
-	textForLink: function(url)
-	{
-		var parts = this.urlPattern.exec(url);
-		return parts ? "Dopplr ("+parts[2]+")" : url;
-	},
+XFNDiscovery.registerService(new XFNDiscovery.Service(
+	"Digg",
+	/^http:\/\/(www\.)?digg\.com\/users\/([^\/]+)\/?/, 2,
+	function(parts) { return "http://digg.com/users/"+parts[2].toLowerCase(); }
+	));
 
-	canonicalURL: function(url)
-	{
-		var parts = this.urlPattern.exec(url);
-		return parts ? "http://www.dopplr.com/traveller/"+parts[2].toLowerCase() : url;
-	}
-});
+XFNDiscovery.registerService(new XFNDiscovery.Service(
+	"Technorati",
+	/^http:\/\/(www\.)?technorati\.com\/people\/technorati\/([^\/]+)\/?/, 2,
+	function(parts) { return "http://technorati.com/people/technorati/"+parts[2].toLowerCase(); }
+	));
 
-XFNDiscovery.registerService({
-	name: "Linked in",
-	class: "linkedin",
-	urlPattern: /^http:\/\/(www\.)?linkedin.com\/in\/([^\/]+)\/?/,
+XFNDiscovery.registerService(new XFNDiscovery.Service(
+	"Vimeo",
+	/^http:\/\/(www\.)?vimeo\.com\/([^\/]+)\/?/, 2,
+	function(parts) { return "http://vimeo.com/"+parts[2].toLowerCase(); }
+	));
 
-	textForLink: function(url)
-	{
-		var parts = this.urlPattern.exec(url);
-		return parts ? "Linked in ("+parts[2]+")" : url;
-	},
+XFNDiscovery.registerService(new XFNDiscovery.Service(
+	"StumbleUpon",
+	/^http:\/\/([^\.]+)\.stumbleupon\.com\/?/, 1,
+	function(parts) { return "http://"+parts[1].toLowerCase()+".stumbleupon.com"; }
+	));
 
-	canonicalURL: function(url)
-	{
-		var parts = this.urlPattern.exec(url);
-		return parts ? "http://www.linkedin.com/in/"+parts[2].toLowerCase() : url;
-	}
-});
+XFNDiscovery.registerService(new XFNDiscovery.Service(
+	"LoveFilm",
+	/^http:\/\/(www\.)?lovefilm\.com\/profile\/([^\/]+)\/?/, 2,
+	function(parts) { return "http://www.lovefilm.com/profile/"+parts[2].toLowerCase(); }
+	));
 
-XFNDiscovery.registerService({
-	name: "Slideshare",
-	class: "slideshare",
-	urlPattern: /^http:\/\/(www\.)?slideshare\.net\/([^\/]+)\/?/,
+XFNDiscovery.registerService(new XFNDiscovery.Service(
+	"Wikipedia",
+	/^http:\/\/(en)\.wikipedia\.org\/wiki\/User:([^\/]+)\/?/, 2,
+	function(parts) { return "http://"+parts[1]+".wikipedia.org/wiki/User:"+parts[2]; }
+	));
 
-	textForLink: function(url)
-	{
-		var parts = this.urlPattern.exec(url);
-		return parts ? "Slideshare ("+parts[2]+")" : url;
-	},
-
-	canonicalURL: function(url)
-	{
-		var parts = this.urlPattern.exec(url);
-		return parts ? "http://www.slideshare.net/"+parts[2].toLowerCase() : url;
-	}
-});
-
-XFNDiscovery.registerService({
-	name: "Identi.ca",
-	class: "identica",
-	urlPattern: /^http:\/\/(www\.)?identi\.ca\/([^\/]+)\/?/,
-
-	textForLink: function(url)
-	{
-		var parts = this.urlPattern.exec(url);
-		return parts ? "Identi.ca ("+parts[2]+")" : url;
-	},
-
-	canonicalURL: function(url)
-	{
-		var parts = this.urlPattern.exec(url);
-		return parts ? "http://identi.ca/"+parts[2].toLowerCase() : url;
-	}
-});
-
-XFNDiscovery.registerService({
-	name: "97 Bottles",
-	class: "97bottles",
-	urlPattern: /^http:\/\/((www|dev)\.)?97bottles.com\/people\/([^\/]+)\/?/,
-
-	textForLink: function(url)
-	{
-		var parts = this.urlPattern.exec(url);
-		return parts ? "97 Bottles ("+parts[3]+")" : url;
-	},
-
-	canonicalURL: function(url)
-	{
-		var parts = this.urlPattern.exec(url);
-		return parts ? "http://97bottles.com/people/"+parts[3].toLowerCase() : url;
-	}
-});
-
-XFNDiscovery.registerService({
-	name: "The Ten Word Review",
-	class: "thetenwordreview",
-	urlPattern: /^http:\/\/(www\.)?thetenwordreview\.com\/users\/([^\/]+)\/?/,
-
-	textForLink: function(url)
-	{
-		var parts = this.urlPattern.exec(url);
-		return parts ? "The Ten Word Review ("+parts[2]+")" : url;
-	},
-
-	canonicalURL: function(url)
-	{
-		var parts = this.urlPattern.exec(url);
-		return parts ? "http://thetenwordreview.com/users/"+parts[2].toLowerCase() : url;
-	}
-});
-
-XFNDiscovery.registerService({
-	name: "Bright Kite",
-	class: "brightkite",
-	urlPattern: /^http:\/\/(www\.)?brightkite\.com\/people\/([^\/]+)\/?/,
-
-	textForLink: function(url)
-	{
-		var parts = this.urlPattern.exec(url);
-		return parts ? "Bright Kite ("+parts[2]+")" : url;
-	},
-
-	canonicalURL: function(url)
-	{
-		var parts = this.urlPattern.exec(url);
-		return parts ? "http://brightkite.com/people/"+parts[2].toLowerCase() : url;
-	}
-});
-
-XFNDiscovery.registerService({
-	name: "Pownce",
-	class: "pownce",
-	urlPattern: /^http:\/\/(www\.)?pownce\.com\/([^\/]+)\/?/,
-
-	textForLink: function(url)
-	{
-		var parts = this.urlPattern.exec(url);
-		return parts ? "Pownce ("+parts[2]+")" : url;
-	},
-
-	canonicalURL: function(url)
-	{
-		var parts = this.urlPattern.exec(url);
-		return parts ? "http://pownce.com/"+parts[2].toLowerCase() : url;
-	}
-});
-
-XFNDiscovery.registerService({
-	name: "Digg",
-	class: "digg",
-	urlPattern: /^http:\/\/(www\.)?digg\.com\/users\/([^\/]+)\/?/,
-
-	textForLink: function(url)
-	{
-		var parts = this.urlPattern.exec(url);
-		return parts ? "Digg ("+parts[2]+")" : url;
-	},
-
-	canonicalURL: function(url)
-	{
-		var parts = this.urlPattern.exec(url);
-		return parts ? "http://digg.com/users/"+parts[2].toLowerCase() : url;
-	}
-});
-
-XFNDiscovery.registerService({
-	name: "Technorati",
-	class: "technorati",
-	urlPattern: /^http:\/\/(www\.)?technorati\.com\/people\/technorati\/([^\/]+)\/?/,
-
-	textForLink: function(url)
-	{
-		var parts = this.urlPattern.exec(url);
-		return parts ? "Technorati ("+parts[2]+")" : url;
-	},
-
-	canonicalURL: function(url)
-	{
-		var parts = this.urlPattern.exec(url);
-		return parts ? "http://technorati.com/people/technorati/"+parts[2].toLowerCase() : url;
-	}
-});
-
-XFNDiscovery.registerService({
-	name: "Vimeo",
-	class: "vimeo",
-	urlPattern: /^http:\/\/(www\.)?vimeo\.com\/([^\/]+)\/?/,
-
-	textForLink: function(url)
-	{
-		var parts = this.urlPattern.exec(url);
-		return parts ? "Vimeo ("+parts[2]+")" : url;
-	},
-
-	canonicalURL: function(url)
-	{
-		var parts = this.urlPattern.exec(url);
-		return parts ? "http://vimeo.com/"+parts[2].toLowerCase() : url;
-	}
-});
-
-XFNDiscovery.registerService({
-	name: "StumbleUpon",
-	class: "stumbleupon",
-	urlPattern: /^http:\/\/([^\.]+)\.stumbleupon\.com\/?/,
-
-	textForLink: function(url)
-	{
-		var parts = this.urlPattern.exec(url);
-		return parts ? "StumbleUpon ("+parts[1]+")" : url;
-	},
-
-	canonicalURL: function(url)
-	{
-		var parts = this.urlPattern.exec(url);
-		return parts ? "http://"+parts[1].toLowerCase()+".stumbleupon.com" : url;
-	}
-});
-
-XFNDiscovery.registerService({
-	name: "LoveFilm",
-	class: "lovefilm",
-	urlPattern: /^http:\/\/(www\.)?lovefilm\.com\/profile\/([^\/]+)\/?/,
-
-	textForLink: function(url)
-	{
-		var parts = this.urlPattern.exec(url);
-		return parts ? "LoveFilm ("+parts[2]+")" : url;
-	},
-
-	canonicalURL: function(url)
-	{
-		var parts = this.urlPattern.exec(url);
-		return parts ? "http://www.lovefilm.com/profile/"+parts[2].toLowerCase() : url;
-	}
-});
-
-XFNDiscovery.registerService({
-	name: "Wikipedia",
-	class: "wikipedia",
-	urlPattern: /^http:\/\/(en)\.wikipedia\.org\/wiki\/User:([^\/]+)\/?/,
-
-	textForLink: function(url)
-	{
-		var parts = this.urlPattern.exec(url);
-		return parts ? "Wikipedia ("+parts[2]+")" : url;
-	},
-
-	canonicalURL: function(url)
-	{
-		var parts = this.urlPattern.exec(url);
-		return parts ? "http://"+parts[1]+".wikipedia.org/wiki/User:"+parts[2] : url;
-	}
-});
-
-XFNDiscovery.registerService({
-	name: "YouTube",
-	class: "youtube",
-	urlPattern: /^http:\/\/(www\.)?youtube\.com\/user\/([^\/]+)\/?/,
-
-	textForLink: function(url)
-	{
-		var parts = this.urlPattern.exec(url);
-		return parts ? "YouTube ("+parts[2]+")" : url;
-	},
-
-	canonicalURL: function(url)
-	{
-		var parts = this.urlPattern.exec(url);
-		return parts ? "http://www.youtube.com/user/"+parts[2].toLowerCase() : url;
-	}
-});
+XFNDiscovery.registerService(new XFNDiscovery.Service(
+	"YouTube",
+	/^http:\/\/(www\.)?youtube\.com\/user\/([^\/]+)\/?/, 2,
+	function(parts) { return "http://www.youtube.com/user/"+parts[2].toLowerCase(); }
+	));
