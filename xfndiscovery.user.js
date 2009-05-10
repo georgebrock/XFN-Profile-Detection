@@ -327,7 +327,7 @@ $(function()
 XFNDiscovery.registerService({
 	name: "Twitter",
 	class: "twitter",
-	urlPattern: /^http:\/\/(www\.)?twitter\.com\/([^\/]+)(\/friends)?\/?$/,
+	urlPattern: /^http:\/\/(www\.)?twitter\.com\/([^\/]+)(\/(friends|favorites))?\/?$/,
 
 	textForLink: function(url)
 	{
