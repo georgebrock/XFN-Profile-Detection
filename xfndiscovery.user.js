@@ -289,6 +289,9 @@ XFNDiscovery.UI = {
 			{
 				$(this).remove();
 			});
+
+		if($("#xfn-discovery ul.profiles.known li").length == 0)
+			$("#xfn-discovery ul.profiles.unknown").show();
 	}
 
 }
