@@ -666,3 +666,21 @@ XFNDiscovery.registerService({
 	}
 });
 
+XFNDiscovery.registerService({
+	name: "Digg",
+	class: "digg",
+	urlPattern: /^http:\/\/(www\.)?digg\.com\/users\/([^\/]+)\/?/,
+
+	textForLink: function(url)
+	{
+		var parts = this.urlPattern.exec(url);
+		return parts ? "Digg ("+parts[2]+")" : url;
+	},
+
+	canonicalURL: function(url)
+	{
+		var parts = this.urlPattern.exec(url);
+		return parts ? "http://digg.com/users/"+parts[2].toLowerCase() : url;
+	}
+});
+
