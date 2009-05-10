@@ -46,6 +46,12 @@
 	padding:0 1em;
 }
 
+#xfn-discovery h5 span.count
+{
+	font-weight:normal;
+	font-size:0.9em;
+}
+
 #xfn-discovery h5 a
 {
 	color:#eee;

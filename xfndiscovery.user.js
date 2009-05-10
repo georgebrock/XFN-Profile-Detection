@@ -195,7 +195,8 @@ XFNDiscovery.UI = {
 				.addClass("unknown")
 				.append(
 				$("<a/>")
-					.append("Even more profiles&#8230;")
+					.append("Even more profiles&#8230; ")
+					.append("<span class=\"count\">(0)</span>")
 					.click(function()
 					{
 						$("#xfn-discovery ul.profiles.unknown").slideToggle("slow");
@@ -300,6 +301,8 @@ XFNDiscovery.UI = {
 				.append($pLink)
 				.fadeIn()
 		);
+
+		$("#xfn-discovery h5 span.count").html("(" + $("#xfn-discovery ul.profiles.unknown li").length + ")");
 	},
 
 	finishedDiscoveringMoreProfiles: function()
