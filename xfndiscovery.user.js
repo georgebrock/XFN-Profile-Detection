@@ -277,7 +277,7 @@ XFNDiscovery.UI = {
 
 	updateWaitMessage: function(message)
 	{
-		XFNDiscovery.UI.$container.find("div.working").html(message);
+		XFNDiscovery.UI.$container.find("div.working").html("<span>"+message+"</span>");
 	},
 
 	discoveredProfile: function(url)
