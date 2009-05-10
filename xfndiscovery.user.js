@@ -432,3 +432,20 @@ XFNDiscovery.registerService({
 		return parts ? "http://getsatisfaction.com/people/"+parts[3].toLowerCase() : url;
 	}
 });
+
+XFNDiscovery.registerService({
+	name: "Facebook",
+	class: "facebook",
+	urlPattern: /^http:\/\/(www\.)?facebook.com\/(people\/[^\/]+\/|profile\.php\?id=)([0-9]+)?/,
+
+	textForLink: function(url)
+	{
+		return "Facebook";
+	},
+
+	canonicalURL: function(url)
+	{
+		var parts = this.urlPattern.exec(url);
+		return parts ? "http://www.facebook.com/profile.php?id="+parts[3] : url;
+	}
+});
