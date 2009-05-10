@@ -94,7 +94,20 @@ var XFNDiscovery = {
 		unsafeWindow[callbackName] = function(data)
 		{
 			for(url in data.nodes)
+			{
 				XFNDiscovery.discoveredProfile(url);
+
+				for(inURL in data.nodes[url].nodes_referenced_by)
+				{
+					var inTypes = data.nodes[url].nodes_referenced_by[inURL].types
+					if(
+						inTypes.length == 1 &&
+						inTypes[0] == "me" &&
+						!/(last\.fm|radio\.aol\.)/.exec(inURL)	// Exclude last.fm URLs: the social graph API data isn't good
+					)
+						XFNDiscovery.discoveredProfile(inURL);
+				}
+			}
 
 			if(XFNDiscovery.uncrawledProfiles.length == 0)
 				XFNDiscovery.UI.finishedDiscoveringMoreProfiles();
