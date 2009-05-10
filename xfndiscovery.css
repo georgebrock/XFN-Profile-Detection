@@ -65,10 +65,10 @@
 #xfn-discovery ul.profiles a
 {
 	display:block;
-	line-height:2em;
+	line-height:1.2em;
 	color:#fff;
 	text-decoration:none;
-	padding:0 1em;
+	padding:0.4em 1em;
 }
 
 #xfn-discovery ul.profiles a:hover,
