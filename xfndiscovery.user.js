@@ -266,7 +266,9 @@ XFNDiscovery.UI = {
 			$pLink.click(function()
 			{
 				$("#xfn-discovery div.iframe-alternative").hide();
-				$("#xfn-discovery iframe").show();
+				$("#xfn-discovery iframe")
+					.attr("src", "about:blank")
+					.show();
 				return true;
 			});
 		}
