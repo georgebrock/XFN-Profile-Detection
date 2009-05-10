@@ -630,7 +630,6 @@ XFNDiscovery.registerService({
 	}
 });
 
-
 XFNDiscovery.registerService({
 	name: "Bright Kite",
 	class: "brightkite",
@@ -646,6 +645,24 @@ XFNDiscovery.registerService({
 	{
 		var parts = this.urlPattern.exec(url);
 		return parts ? "http://brightkite.com/people/"+parts[2].toLowerCase() : url;
+	}
+});
+
+XFNDiscovery.registerService({
+	name: "Pownce",
+	class: "pownce",
+	urlPattern: /^http:\/\/(www\.)?pownce\.com\/([^\/]+)\/?/,
+
+	textForLink: function(url)
+	{
+		var parts = this.urlPattern.exec(url);
+		return parts ? "Pownce ("+parts[2]+")" : url;
+	},
+
+	canonicalURL: function(url)
+	{
+		var parts = this.urlPattern.exec(url);
+		return parts ? "http://pownce.com/"+parts[2].toLowerCase() : url;
 	}
 });
 
