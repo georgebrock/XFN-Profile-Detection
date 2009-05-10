@@ -267,17 +267,17 @@ $(function()
 XFNDiscovery.registerService({
 	name: "Twitter",
 	class: "twitter",
-	urlPattern: /^http:\/\/(www\.)?twitter\.com\/[^\/]+\/?$/,
+	urlPattern: /^http:\/\/(www\.)?twitter\.com\/([^\/]+)(\/friends)?\/?$/,
 
 	textForLink: function(url)
 	{
-		var parts = /^http:\/\/(www\.)?twitter\.com\/([^\/]+)\/?$/.exec(url);
+		var parts = this.urlPattern.exec(url);
 		return parts ? "Twitter (@"+parts[2]+")" : url;
 	},
 
 	canonicalURL: function(url)
 	{
-		var parts = /^http:\/\/(www\.)?twitter\.com\/([^\/]+)\/?$/.exec(url);
+		var parts = this.urlPattern.exec(url);
 		return parts ? "http://twitter.com/"+parts[2] : url;
 	}
 });
