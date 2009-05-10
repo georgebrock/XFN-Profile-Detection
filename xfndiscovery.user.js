@@ -357,18 +357,18 @@ XFNDiscovery.registerService({
 XFNDiscovery.registerService({
 	name: "Last.fm",
 	class: "lastfm",
-	urlPattern: /^http:\/\/(www\.)?last\.fm\/user\/[^\/]+\/?$/,
+	urlPattern: /^http:\/\/(www\.)?(last\.fm|lastfm\.(com\.)?[a-z]+)\/user\/([^\/\?]+)\/?(\?setlang=[a-z]+)?$/,
 
 	textForLink: function(url)
 	{
-		var parts = /^http:\/\/(www\.)?last\.fm\/user\/([^\/]+)\/?$/.exec(url);
-		return parts ? "Last.fm ("+parts[2]+")" : url;
+		var parts = this.urlPattern.exec(url);
+		return parts ? "Last.fm ("+parts[4]+")" : url;
 	},
 
 	canonicalURL: function(url)
 	{
-		var parts = /^http:\/\/(www\.)?last\.fm\/user\/([^\/]+)\/?$/.exec(url);
-		return parts ? "http://www.last.fm/user/" + parts[2] : url;
+		var parts = this.urlPattern.exec(url);
+		return parts ? "http://www.last.fm/user/" + parts[4] : url;
 	}
 });
 
