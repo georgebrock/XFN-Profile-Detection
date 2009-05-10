@@ -449,3 +449,21 @@ XFNDiscovery.registerService({
 		return parts ? "http://www.facebook.com/profile.php?id="+parts[3] : url;
 	}
 });
+
+XFNDiscovery.registerService({
+	name: "Dopplr",
+	class: "dopplr",
+	urlPattern: /^http:\/\/(www\.)?dopplr.com\/traveller\/([^\/]+)\/?/,
+
+	textForLink: function(url)
+	{
+		var parts = this.urlPattern.exec(url);
+		return parts ? "Dopplr ("+parts[2]+")" : url;
+	},
+
+	canonicalURL: function(url)
+	{
+		var parts = this.urlPattern.exec(url);
+		return parts ? "http://www.dopplr.com/traveller/"+parts[2] : url;
+	}
+});
