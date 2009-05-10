@@ -200,15 +200,15 @@ XFNDiscovery.UI = {
 				.addClass("unknown")
 				.hide();
 
-			var $iframeAlternative = $("<div><div class=\"inner\"></div></div>")
+			var $iframeAlternative = $("<div><div class=\"inner\">&larr; Select a profile</div></div>")
 				.attr("class", "iframe-alternative")
-				.hide();
+				.show();
 
 			var $iframe = $("<iframe/>")
 				.attr("id", "xfn-discovery-frame")
 				.attr("name", "xfn-discovery-frame")
-				.attr("src", "data:text/html;base64,PGh0bWw+PGhlYWQ+PHRpdGxlPk5vIHByb2ZpbGUgc2VsZWN0ZWQ8L3RpdGxl\nPjxzdHlsZSB0eXBlPSJ0ZXh0L2NzcyI+Ym9keXtmb250LWZhbWlseTpzYW5z\nLXNlcmlmO2ZvbnQtc2l6ZTp4LWxhcmdlO308L3N0eWxlPjxib2R5PjxwPiZs\nYXJyOyBTZWxlY3QgYSBwcm9maWxlPC9wPjwvYm9keT48L2h0bWw+");
-				// Base64 encoded: <html><head><title>No profile selected</title><style type="text/css">body{font-family:sans-serif;font-size:x-large;}</style><body><p>&larr; Select a profile</p></body></html>
+				.attr("src", "about:blank")
+				.hide();
 
 			$content
 				.append("<h4>More user profiles</h4>")
