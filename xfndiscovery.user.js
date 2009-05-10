@@ -593,3 +593,40 @@ XFNDiscovery.registerService({
 		return parts ? "http://identi.ca/"+parts[2].toLowerCase() : url;
 	}
 });
+
+XFNDiscovery.registerService({
+	name: "97 Bottles",
+	class: "97bottles",
+	urlPattern: /^http:\/\/((www|dev)\.)?97bottles.com\/people\/([^\/]+)\/?/,
+
+	textForLink: function(url)
+	{
+		var parts = this.urlPattern.exec(url);
+		return parts ? "97 Bottles ("+parts[3]+")" : url;
+	},
+
+	canonicalURL: function(url)
+	{
+		var parts = this.urlPattern.exec(url);
+		return parts ? "http://97bottles.com/people/"+parts[3].toLowerCase() : url;
+	}
+});
+
+XFNDiscovery.registerService({
+	name: "The Ten Word Review",
+	class: "thetenwordreview",
+	urlPattern: /^http:\/\/(www\.)?thetenwordreview\.com\/users\/([^\/]+)\/?/,
+
+	textForLink: function(url)
+	{
+		var parts = this.urlPattern.exec(url);
+		return parts ? "The Ten Word Review ("+parts[2]+")" : url;
+	},
+
+	canonicalURL: function(url)
+	{
+		var parts = this.urlPattern.exec(url);
+		return parts ? "http://thetenwordreview.com/users/"+parts[2].toLowerCase() : url;
+	}
+});
+
