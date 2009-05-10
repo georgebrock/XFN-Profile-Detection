@@ -80,6 +80,8 @@ var XFNDiscovery = {
 		var url = XFNDiscovery.uncrawledProfiles.pop();
 		XFNDiscovery.crawledProfiles.push(url);
 
+		XFNDiscovery.UI.updateWaitMessage("Looking for more profiles ("+(XFNDiscovery.crawledProfiles.length)+"/"+(XFNDiscovery.crawledProfiles.length+XFNDiscovery.uncrawledProfiles.length)+")");
+
 		var query = "select href from html where url='"+url+"' and xpath='//a[contains(concat(\" \",@rel,\" \"), \" me \")]'";
 		XFNDiscovery.queryYQL(query, function(data)
 		{
@@ -271,6 +273,11 @@ XFNDiscovery.UI = {
 					.addClass("working")
 					.append("<span>Looking for more profiles&#8230;</span>")
 			);
+	},
+
+	updateWaitMessage: function(message)
+	{
+		XFNDiscovery.UI.$container.find("div.working").html(message);
 	},
 
 	discoveredProfile: function(url)
