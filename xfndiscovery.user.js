@@ -37,11 +37,26 @@ var XFNDiscovery = {
 		XFNDiscovery.crawlNextProfile();
 	},
 
+	discoveredProfile: function(url)
+	{
+		url = url.replace(/\/$/, "");
+
+		if(
+			url.match(/^http:\/\//) &&
+			$.inArray(url, XFNDiscovery.crawledProfiles) == -1 &&
+			$.inArray(url, XFNDiscovery.uncrawledProfiles) == -1
+		)
+		{
+			XFNDiscovery.uncrawledProfiles.push(url);
+			XFNDiscovery.UI.discoveredProfile(url);
+		}
+	},
+
 	crawlNextProfile: function()
 	{
 		if(XFNDiscovery.uncrawledProfiles.length == 0)
 		{
-			XFNDiscovery.UI.finishedDiscoveringMoreProfiles();
+			XFNDiscovery.readSocialGraph();
 			return;
 		}
 
@@ -56,20 +71,36 @@ var XFNDiscovery = {
 				var links = data.query.results.a;
 				for(var i = 0, link; link = links[i]; i++)
 				{
-					if(
-						link.href.match(/^http:\/\//) &&
-						$.inArray(link.href, XFNDiscovery.crawledProfiles) == -1 &&
-						$.inArray(link.href, XFNDiscovery.uncrawledProfiles) == -1
-					)
-					{
-						XFNDiscovery.uncrawledProfiles.push(link.href);
-						XFNDiscovery.UI.discoveredProfile(link.href);
-					}
+					XFNDiscovery.discoveredProfile(link.href);
 				}
 			}
 
 			XFNDiscovery.crawlNextProfile();
 		});
+	},
+
+	readSocialGraph: function()
+	{
+		var callbackName = "xfndiscovery" + new Date().getTime();
+		var sgURL =
+			"http://socialgraph.apis.google.com/lookup?fme=1&edi=1&edo=0" +
+			"&q=" + escape(XFNDiscovery.crawledProfiles.join(",")) +
+			"&callback=" + escape(callbackName);
+
+		console.log(sgURL);
+
+		unsafeWindow[callbackName] = function(data)
+		{
+			for(url in data.nodes)
+				XFNDiscovery.discoveredProfile(url);
+
+			if(XFNDiscovery.uncrawledProfiles.length == 0)
+				XFNDiscovery.UI.finishedDiscoveringMoreProfiles();
+			else
+				XFNDiscovery.crawlNextProfile();
+		}
+
+		$.get(sgURL, {}, function(){}, "jsonp");
 	},
 
 	registerService: function(service)
