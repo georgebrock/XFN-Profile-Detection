@@ -378,3 +378,21 @@ XFNDiscovery.registerService({
 		return parts ? "http://upcoming.yahoo.com/user/" + parts[1] : url;
 	}
 });
+
+XFNDiscovery.registerService({
+	name: "MyBlogLog",
+	class: "mybloglog",
+	urlPattern: /^http:\/\/(www\.)?mybloglog\.com\/buzz\/members\/([^\/]+)(\/(contacts|pics))?\/?$/,
+
+	textForLink: function(url)
+	{
+		var parts = this.urlPattern.exec(url);
+		return parts ? "MyBlogLog ("+parts[2]+")" : url;
+	},
+
+	canonicalURL: function(url)
+	{
+		var parts = this.urlPattern.exec(url);
+		return parts ? "http://www.mybloglog.com/buzz/members/"+parts[2].toLowerCase() : url;
+	}
+});
