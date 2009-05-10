@@ -4,7 +4,7 @@
 // @description   Discover a user's other profiles using the magic of XFN
 // @include       *
 // @require       http://code.jquery.com/jquery-latest.js
-// @resource      stylesheet xfndiscovery.css
+// @resource      stylesheet http://georgebrock.com/openhack2009/xfndiscovery.css
 // ==/UserScript==
 
 var XFNDiscovery = {
