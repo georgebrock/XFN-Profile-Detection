@@ -520,3 +520,9 @@ XFNDiscovery.registerService(new XFNDiscovery.Service(
 	/^http:\/\/(www\.)?youtube\.com\/user\/([^\/]+)\/?/, 2,
 	function(parts) { return "http://www.youtube.com/user/"+parts[2].toLowerCase(); }
 	));
+
+XFNDiscovery.registerService(new XFNDiscovery.Service(
+	"XBox Live",
+	/^http:\/\/live\.xbox\.com\/member\/([^\/]+)\/?$/, 1,
+	function(parts) { return "http://live.xbox.com/member/" + parts[1].toLowerCase(); }
+	));
