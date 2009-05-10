@@ -684,3 +684,21 @@ XFNDiscovery.registerService({
 	}
 });
 
+XFNDiscovery.registerService({
+	name: "Technorati",
+	class: "technorati",
+	urlPattern: /^http:\/\/(www\.)?technorati\.com\/people\/technorati\/([^\/]+)\/?/,
+
+	textForLink: function(url)
+	{
+		var parts = this.urlPattern.exec(url);
+		return parts ? "Technorati ("+parts[2]+")" : url;
+	},
+
+	canonicalURL: function(url)
+	{
+		var parts = this.urlPattern.exec(url);
+		return parts ? "http://technorati.com/people/technorati/"+parts[2].toLowerCase() : url;
+	}
+});
+
