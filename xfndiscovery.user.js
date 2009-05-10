@@ -18,7 +18,9 @@ var XFNDiscovery = {
 		{
 			var rel = " " + $(this).attr("rel") + " ";
 			if(/ me /.exec(rel))
+			{
 				XFNDiscovery.profiles.push(XFNDiscovery.normaliseURL($(this).attr("href")));
+			}
 		});
 
 		XFNDiscovery.UI.init();
@@ -32,7 +34,9 @@ var XFNDiscovery = {
 		XFNDiscovery.crawledProfiles = [];
 
 		for(var i = 0, u; u = XFNDiscovery.profiles[i]; i++)
+		{
 			XFNDiscovery.uncrawledProfiles.push(u);
+		}
 
 		XFNDiscovery.crawlNextProfile();
 	},
@@ -43,7 +47,9 @@ var XFNDiscovery = {
 
 		var service = XFNDiscovery.serviceForURL(url);
 		if(service)
+		{
 			url = service.canonicalURL(url);
+		}
 
 		return url;
 	},
@@ -112,14 +118,20 @@ var XFNDiscovery = {
 						inTypes[0] == "me" &&
 						!/(last\.fm|radio\.aol\.)/.exec(inURL)	// Exclude last.fm URLs: the social graph API data isn't good
 					)
+					{
 						XFNDiscovery.discoveredProfile(inURL);
+					}
 				}
 			}
 
 			if(XFNDiscovery.uncrawledProfiles.length == 0)
+			{
 				XFNDiscovery.UI.finishedDiscoveringMoreProfiles();
+			}
 			else
+			{
 				XFNDiscovery.crawlNextProfile();
+			}
 		}
 
 		$.get(sgURL, {}, function(){}, "jsonp");
@@ -135,7 +147,9 @@ var XFNDiscovery = {
 		for(var i = 0, s; s = XFNDiscovery.services[i]; i++)
 		{
 			if(s.urlPattern.exec(url))
+			{
 				return s;
+			}
 		}
 
 		return null;
@@ -155,7 +169,9 @@ XFNDiscovery.UI = {
 	init: function()
 	{
 		if(XFNDiscovery.profiles.length == 0)
+		{
 			return;
+		}
 
 		$("head").append(
 			$("<link/>")
@@ -314,7 +330,9 @@ XFNDiscovery.UI = {
 			});
 
 		if($("#xfn-discovery ul.profiles.known li").length == 0)
+		{
 			$("#xfn-discovery ul.profiles.unknown").show();
+		}
 	}
 
 }
@@ -322,7 +340,9 @@ XFNDiscovery.UI = {
 $(function()
 {
 	if(unsafeWindow.top != unsafeWindow)
+	{
 		return;
+	}
 
 	XFNDiscovery.init();
 })
@@ -335,7 +355,9 @@ XFNDiscovery.Service = function(name, urlPattern, usernamePart, canonicalGenerat
 	this.usernamePart = usernamePart;
 	this.canonicalGenerator = canonicalGenerator;
 	if(typeof click == "function")
+	{
 		this.click = click;
+	}
 };
 
 XFNDiscovery.Service.prototype = {
@@ -343,11 +365,16 @@ XFNDiscovery.Service.prototype = {
 	textForLink: function(url)
 	{
 		var parts = this.urlPattern.exec(url);
-		if(!parts) return url;
+		if(!parts)
+		{
+			return url;
+		}
 
 		var text = this.name;
 		if(this.usernamePart > 0)
+		{
 			text += " (" + parts[this.usernamePart] + ")";
+		}
 
 		return text;
 	},
