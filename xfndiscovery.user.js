@@ -630,3 +630,22 @@ XFNDiscovery.registerService({
 	}
 });
 
+
+XFNDiscovery.registerService({
+	name: "Bright Kite",
+	class: "brightkite",
+	urlPattern: /^http:\/\/(www\.)?brightkite\.com\/people\/([^\/]+)\/?/,
+
+	textForLink: function(url)
+	{
+		var parts = this.urlPattern.exec(url);
+		return parts ? "Bright Kite ("+parts[2]+")" : url;
+	},
+
+	canonicalURL: function(url)
+	{
+		var parts = this.urlPattern.exec(url);
+		return parts ? "http://brightkite.com/people/"+parts[2].toLowerCase() : url;
+	}
+});
+
