@@ -223,10 +223,13 @@ XFNDiscovery.UI = {
 				XFNDiscovery.UI.discoveredProfile(p);
 			}
 
-			XFNDiscovery.discoverMoreProfiles();
+			$content.slideDown(function()
+			{
+				XFNDiscovery.discoverMoreProfiles();
+			});
 		}
-		
-		$content.slideToggle();
+		else
+			$content.slideToggle();
 	},
 
 	startedDiscoveringMoreProfiles: function()
