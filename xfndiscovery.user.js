@@ -472,18 +472,18 @@ XFNDiscovery.registerService({
 XFNDiscovery.registerService({
 	name: "FriendFeed",
 	class: "friendfeed",
-	urlPattern: /^http:\/\/(www\.)?friendfeed.com\/([^\/]+)\/?/,
+	urlPattern: /^http:\/\/(www\.)?(ff\.im|friendfeed\.com)\/([^\/]+)\/?/,
 
 	textForLink: function(url)
 	{
 		var parts = this.urlPattern.exec(url);
-		return parts ? "FriendFeed ("+parts[2]+")" : url;
+		return parts ? "FriendFeed ("+parts[3]+")" : url;
 	},
 
 	canonicalURL: function(url)
 	{
 		var parts = this.urlPattern.exec(url);
-		return parts ? "http://friendfeed.com/"+parts[2].toLowerCase() : url;
+		return parts ? "http://friendfeed.com/"+parts[3].toLowerCase() : url;
 	}
 });
 
