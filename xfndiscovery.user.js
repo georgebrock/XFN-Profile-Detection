@@ -467,3 +467,21 @@ XFNDiscovery.registerService({
 		return parts ? "http://www.dopplr.com/traveller/"+parts[2] : url;
 	}
 });
+
+XFNDiscovery.registerService({
+	name: "Linked in",
+	class: "linkedin",
+	urlPattern: /^http:\/\/(www\.)?linkedin.com\/in\/([^\/]+)\/?/,
+
+	textForLink: function(url)
+	{
+		var parts = this.urlPattern.exec(url);
+		return parts ? "Linked in ("+parts[2]+")" : url;
+	},
+
+	canonicalURL: function(url)
+	{
+		var parts = this.urlPattern.exec(url);
+		return parts ? "http://www.linkedin.com/in/"+parts[2].toLowerCase() : url;
+	}
+});
