@@ -18,7 +18,7 @@ var XFNDiscovery = {
 		{
 			var rel = " " + $(this).attr("rel") + " ";
 			if(/ me /.exec(rel))
-				XFNDiscovery.profiles.push($(this).attr("href").replace(/\/$/, ""));
+				XFNDiscovery.profiles.push(XFNDiscovery.normaliseURL($(this).attr("href")));
 		});
 
 		XFNDiscovery.UI.init();
@@ -37,13 +37,20 @@ var XFNDiscovery = {
 		XFNDiscovery.crawlNextProfile();
 	},
 
-	discoveredProfile: function(url)
+	normaliseURL: function(url)
 	{
 		url = url.replace(/\/$/, "");
 
 		var service = XFNDiscovery.serviceForURL(url);
 		if(service)
 			url = service.canonicalURL(url);
+
+		return url;
+	},
+
+	discoveredProfile: function(url)
+	{
+		url = XFNDiscovery.normaliseURL(url);
 
 		if(
 			url.match(/^http:\/\//) &&
