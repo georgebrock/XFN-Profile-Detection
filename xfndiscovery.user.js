@@ -232,7 +232,7 @@ XFNDiscovery.UI = {
 		if(service)
 		{
 			$pLink
-				.html(service.textForLink(url))
+				.html("<span></span> "+service.textForLink(url))
 				.addClass(service.class);
 		}
 
