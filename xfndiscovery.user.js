@@ -536,7 +536,7 @@ XFNDiscovery.registerService({
 	canonicalURL: function(url)
 	{
 		var parts = this.urlPattern.exec(url);
-		return parts ? "http://www.dopplr.com/traveller/"+parts[2] : url;
+		return parts ? "http://www.dopplr.com/traveller/"+parts[2].toLowerCase() : url;
 	}
 });
 
