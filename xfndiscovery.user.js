@@ -184,9 +184,21 @@ XFNDiscovery.UI = {
 				.addClass("profiles")
 				.addClass("known");
 
+			var $unknownTitle = $("<h5/>")
+				.addClass("unknown")
+				.append(
+				$("<a/>")
+					.append("Even more profiles")
+					.click(function()
+					{
+						$("#xfn-discovery ul.profiles.unknown").slideToggle("slow");
+					})
+			);
+
 			var $unknownProfileList = $("<ul/>")
 				.addClass("profiles")
-				.addClass("unknown");
+				.addClass("unknown")
+				.hide();
 
 			var $iframe = $("<iframe/>")
 				.attr("id", "xfn-discovery-frame")
@@ -197,6 +209,7 @@ XFNDiscovery.UI = {
 			$content
 				.append("<h4>More user profiles</h4>")
 				.append($profileList)
+				.append($unknownTitle)
 				.append($unknownProfileList)
 				.append($iframe);
 

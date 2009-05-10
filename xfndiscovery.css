@@ -36,6 +36,22 @@
 	margin:0 0.667em;
 }
 
+#xfn-discovery h5
+{
+	width:auto;
+	float:left;
+	clear:left;
+	font-size:1em;
+	margin:1em 0 0;
+	padding:0 1em;
+}
+
+#xfn-discovery h5 a
+{
+	color:#eee;
+	cursor:pointer;
+}
+
 #xfn-discovery ul.profiles
 {
 	margin:1em 0 0 0;
