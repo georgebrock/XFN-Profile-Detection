@@ -412,11 +412,11 @@ XFNDiscovery.registerService({
 XFNDiscovery.registerService({
 	name: "Flickr",
 	class: "flickr",
-	urlPattern: /^http:\/\/(www\.)?flickr\.com\/(people|photos)\/[^\/]+\/?$/,
+	urlPattern: /^http:\/\/(www\.)?flickr\.com\/(people|photos)\/([^\/]+)(\/contacts)?\/?$/,
 
 	textForLink: function(url)
 	{
-		var parts = /^http:\/\/(www\.)?flickr\.com\/(people|photos)\/([^\/]+)\/?$/.exec(url);
+		var parts = this.urlPattern.exec(url);
 		if(parts)
 		{
 			var txt = "Flickr";
@@ -429,7 +429,7 @@ XFNDiscovery.registerService({
 
 	canonicalURL: function(url)
 	{
-		var parts = /^http:\/\/(www\.)?flickr\.com\/(people|photos)\/([^\/]+)\/?$/.exec(url);
+		var parts = this.urlPattern.exec(url);
 		return parts ? "http://www.flickr.com/people/" + unescape(parts[3]) : url;
 	}
 });
