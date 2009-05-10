@@ -41,6 +41,10 @@ var XFNDiscovery = {
 	{
 		url = url.replace(/\/$/, "");
 
+		var service = XFNDiscovery.serviceForURL(url);
+		if(service)
+			url = service.canonicalURL(url);
+
 		if(
 			url.match(/^http:\/\//) &&
 			$.inArray(url, XFNDiscovery.crawledProfiles) == -1 &&
@@ -256,6 +260,12 @@ XFNDiscovery.registerService({
 	{
 		var parts = /^http:\/\/(www\.)?twitter\.com\/([^\/]+)\/?$/.exec(url);
 		return parts ? "Twitter (@"+parts[2]+")" : url;
+	},
+
+	canonicalURL: function(url)
+	{
+		var parts = /^http:\/\/(www\.)?twitter\.com\/([^\/]+)\/?$/.exec(url);
+		return parts ? "http://twitter.com/"+parts[2] : url;
 	}
 });
 
@@ -268,18 +278,31 @@ XFNDiscovery.registerService({
 	{
 		var parts = /^http:\/\/(www\.)?last\.fm\/user\/([^\/]+)\/?$/.exec(url);
 		return parts ? "Last.fm ("+parts[2]+")" : url;
+	},
+
+	canonicalURL: function(url)
+	{
+		var parts = /^http:\/\/(www\.)?last\.fm\/user\/([^\/]+)\/?$/.exec(url);
+		return parts ? "http://www.last.fm/user/" + parts[2] : url;
 	}
 });
 
 XFNDiscovery.registerService({
 	name: "Delicious",
 	class: "delicious",
-	urlPattern: /^http:\/\/(www\.)?delicious\.com\/[^\/]+\/?$/,
+	urlPattern: /^http:\/\/((www\.)?delicious\.com|del\.icio\.us)\/[^\/]+\/?$/,
 
 	textForLink: function(url)
 	{
-		var parts = /^http:\/\/(www\.)?delicious\.com\/([^\/]+)\/?$/.exec(url);
-		return parts ? "Delicious ("+parts[2]+")" : url;
+		var parts = /^http:\/\/((www\.)?delicious\.com|del\.icio\.us)\/([^\/]+)\/?$/.exec(url);
+		console.log(parts);
+		return parts ? "Delicious ("+parts[3]+")" : url;
+	},
+
+	canonicalURL: function(url)
+	{
+		var parts = /^http:\/\/((www\.)?delicious\.com|del\.icio\.us)\/([^\/]+)\/?$/.exec(url);
+		return parts ? "http://delicious.com/" + parts[3] : url;
 	}
 });
 
@@ -292,6 +315,12 @@ XFNDiscovery.registerService({
 	{
 		var parts = /^http:\/\/(www\.)?github\.com\/([^\/]+)\/?$/.exec(url);
 		return parts ? "GitHub ("+parts[2]+")" : url;
+	},
+
+	canonicalURL: function(url)
+	{
+		var parts = /^http:\/\/(www\.)?github\.com\/([^\/]+)\/?$/.exec(url);
+		return parts ? "http://github.com/" + parts[2] : url;
 	}
 });
 
@@ -311,6 +340,12 @@ XFNDiscovery.registerService({
 			return txt;
 		}
 		return url;
+	},
+
+	canonicalURL: function(url)
+	{
+		var parts = /^http:\/\/(www\.)?flickr\.com\/(people|photos)\/([^\/]+)\/?$/.exec(url);
+		return parts ? "http://www.flickr.com/people/" + parts[3] : url;
 	}
 });
 
@@ -322,5 +357,11 @@ XFNDiscovery.registerService({
 	textForLink: function(url)
 	{
 		return "Upcoming";
+	},
+
+	canonicalURL: function(url)
+	{
+		var parts = /^http:\/\/upcoming.yahoo.com\/user\/([^\/]+)\/?$/.exec(url);
+		return parts ? "http://upcoming.yahoo.com/user/" + parts[1] : url;
 	}
 });
