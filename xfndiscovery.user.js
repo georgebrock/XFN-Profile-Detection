@@ -414,3 +414,21 @@ XFNDiscovery.registerService({
 		return parts ? "http://friendfeed.com/"+parts[2].toLowerCase() : url;
 	}
 });
+
+XFNDiscovery.registerService({
+	name: "Get Satisfaction",
+	class: "getsatisfaction",
+	urlPattern: /^http:\/\/(www\.)?(getsfn|getsatisfaction).com\/people\/([^\/]+)\/?/,
+
+	textForLink: function(url)
+	{
+		var parts = this.urlPattern.exec(url);
+		return parts ? "Get Satisfaction ("+parts[3]+")" : url;
+	},
+
+	canonicalURL: function(url)
+	{
+		var parts = this.urlPattern.exec(url);
+		return parts ? "http://getsatisfaction.com/people/"+parts[3].toLowerCase() : url;
+	}
+});
