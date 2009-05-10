@@ -18,7 +18,7 @@ var XFNDiscovery = {
 		{
 			var rel = " " + $(this).attr("rel") + " ";
 			if(/ me /.exec(rel))
-				XFNDiscovery.profiles.push($(this).attr("href"));
+				XFNDiscovery.profiles.push($(this).attr("href").replace(/\/$/, ""));
 		});
 
 		XFNDiscovery.UI.init();
