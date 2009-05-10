@@ -87,8 +87,6 @@ var XFNDiscovery = {
 			"&q=" + escape(XFNDiscovery.crawledProfiles.join(",")) +
 			"&callback=" + escape(callbackName);
 
-		console.log(sgURL);
-
 		unsafeWindow[callbackName] = function(data)
 		{
 			for(url in data.nodes)
