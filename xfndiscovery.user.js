@@ -719,3 +719,21 @@ XFNDiscovery.registerService({
 		return parts ? "http://vimeo.com/"+parts[2].toLowerCase() : url;
 	}
 });
+
+XFNDiscovery.registerService({
+	name: "StumbleUpon",
+	class: "stumbleupon",
+	urlPattern: /^http:\/\/([^\.]+)\.stumbleupon\.com\/?/,
+
+	textForLink: function(url)
+	{
+		var parts = this.urlPattern.exec(url);
+		return parts ? "StumbleUpon ("+parts[1]+")" : url;
+	},
+
+	canonicalURL: function(url)
+	{
+		var parts = this.urlPattern.exec(url);
+		return parts ? "http://"+parts[1].toLowerCase()+".stumbleupon.com" : url;
+	}
+});
