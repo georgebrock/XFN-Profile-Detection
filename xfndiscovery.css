@@ -65,8 +65,15 @@
 
 #xfn-discovery ul.profiles a:focus
 {
-	color:#d00;
 	outline:none;
+}
+
+#xfn-discovery ul.profiles a:focus:after
+{
+	content:' \2192';
+	font-weight:bold;
+	font-size:1.5em;
+	line-height:0.8em;
 }
 
 #xfn-discovery ul.profiles a span
