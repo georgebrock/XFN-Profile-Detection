@@ -521,7 +521,7 @@ XFNDiscovery.registerService(new XFNDiscovery.Service(
 
 XFNDiscovery.registerService(new XFNDiscovery.Service(
 	"Technorati",
-	/^http:\/\/(www\.)?technorati\.com\/people\/technorati\/([^\/]+)\/?/, 2,
+	/^http:\/\/([a-z0-9]+\.)?technorati\.com\/people\/technorati\/([^\/]+)\/?/, 2,
 	function(parts) { return "http://technorati.com/people/technorati/"+parts[2].toLowerCase(); }
 	));
 
