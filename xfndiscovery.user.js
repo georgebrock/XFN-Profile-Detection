@@ -557,3 +557,21 @@ XFNDiscovery.registerService({
 		return parts ? "http://www.linkedin.com/in/"+parts[2].toLowerCase() : url;
 	}
 });
+
+XFNDiscovery.registerService({
+	name: "Slideshare",
+	class: "slideshare",
+	urlPattern: /^http:\/\/(www\.)?slideshare\.net\/([^\/]+)\/?/,
+
+	textForLink: function(url)
+	{
+		var parts = this.urlPattern.exec(url);
+		return parts ? "Slideshare ("+parts[2]+")" : url;
+	},
+
+	canonicalURL: function(url)
+	{
+		var parts = this.urlPattern.exec(url);
+		return parts ? "http://www.slideshare.net/"+parts[2].toLowerCase() : url;
+	}
+});
