@@ -102,7 +102,7 @@ var XFNDiscovery = {
 	{
 		var callbackName = "xfndiscovery" + new Date().getTime();
 		var sgURL =
-			"http://socialgraph.apis.google.com/lookup?fme=1&edi=1&edo=0" +
+			"http://socialgraph.apis.google.com/lookup?edi=1&edo=0" +
 			"&q=" + escape(XFNDiscovery.crawledProfiles.join(",")) +
 			"&callback=" + escape(callbackName);
 
