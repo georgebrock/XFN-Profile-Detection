@@ -11,6 +11,7 @@ var XFNDiscovery = {
 
 	profiles: [],
 	services: [],
+	serviceURLMap: {},
 
 	init: function()
 	{
@@ -150,15 +151,22 @@ var XFNDiscovery = {
 
 	serviceForURL: function(url)
 	{
+		if(typeof XFNDiscovery.serviceURLMap[url] != "undefined")
+		{
+			return XFNDiscovery.serviceURLMap[url];
+		}
+
 		for(var i = 0; i < XFNDiscovery.services.length; i++)
 		{
 			var s = XFNDiscovery.services[i];
 			if(s.urlPattern.exec(url))
 			{
+				XFNDiscovery.serviceURLMap[url] = s;
 				return s;
 			}
 		}
 
+		XFNDiscovery.serviceURLMap[url] = null;
 		return null;
 	},
 
