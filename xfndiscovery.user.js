@@ -93,6 +93,10 @@ var XFNDiscovery = {
 			if(typeof data.error == "undefined" && typeof data.query.results == "object" && data.query.results !== null)
 			{
 				var links = data.query.results.a;
+
+				if(typeof links.length == "undefined" && typeof links.href == "string")
+					links = [links];
+
 				for(var i = 0; i < links.length; i++)
 				{
 					XFNDiscovery.discoveredProfile(links[i].href);
