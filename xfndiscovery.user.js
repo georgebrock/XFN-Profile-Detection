@@ -415,7 +415,7 @@ XFNDiscovery.Service.prototype = {
 
 XFNDiscovery.registerService(new XFNDiscovery.Service(
 		"Twitter", 
-		/^http:\/\/(www\.)?twitter\.com\/([^\/]+)(\/(friends|favorites))?\/?$/, 2, 
+		/^http:\/\/(www\.)?twitter\.com\/([^\/]+)(\/(friends|favorites|followers))?\/?$/, 2, 
 		function(parts) { return "http://twitter.com/"+parts[2].toLowerCase(); },
 		function(url)
 		{
