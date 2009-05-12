@@ -442,8 +442,8 @@ XFNDiscovery.registerService(new XFNDiscovery.Service(
 
 XFNDiscovery.registerService(new XFNDiscovery.Service(
 		"Flickr",
-		/^http:\/\/(www\.)?flickr\.com\/(people|photos)\/([^\/]+)(\/contacts)?\/?$/, 3,
-		function(parts) { return "http://www.flickr.com/people/" + unescape(parts[3]); }
+		/^http:\/\/(www\.)?flickr\.com\/((people|photos)\/)?([^\/]+)(\/contacts)?\/?$/, 4,
+		function(parts) { return "http://www.flickr.com/people/" + unescape(parts[4]); }
 	));
 
 XFNDiscovery.registerService(new XFNDiscovery.Service(
