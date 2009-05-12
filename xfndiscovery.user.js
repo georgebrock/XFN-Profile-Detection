@@ -20,7 +20,7 @@ var XFNDiscovery = {
 			var rel = " " + $(this).attr("rel") + " ";
 			if(/ me /.exec(rel))
 			{
-				XFNDiscovery.profiles.push(XFNDiscovery.normaliseURL($(this).attr("href")));
+				XFNDiscovery.profiles.push(XFNDiscovery.normaliseURL($(this).attr("href"), window.location.href));
 			}
 		});
 
@@ -46,8 +46,23 @@ var XFNDiscovery = {
 		XFNDiscovery.crawlNextProfile();
 	},
 
-	normaliseURL: function(url)
+	normaliseURL: function(url, relativeTo)
 	{
+		if(typeof relativeTo == "string" && !(/^[a-z]+:/i.exec(url)) && XFNDiscovery.serviceForURL(relativeTo) === null)
+		{
+			if(url.charAt(0) == "/")
+			{
+				url = relativeTo.replace(/^http:\/\/([^\/]+)(\/.*)?/, "http://$1") + "/" + url;
+			}
+			else
+			{
+				url = relativeTo + "/" + url;
+			}
+
+			url = url.replace(/([^:])\/\/+/g, "$1/");
+			url = url.replace(/\/[^\/]+\/\.\.\//, "/");
+		}
+
 		url = url.replace(/\/$/, "");
 
 		var service = XFNDiscovery.serviceForURL(url);
@@ -59,9 +74,9 @@ var XFNDiscovery = {
 		return url;
 	},
 
-	discoveredProfile: function(url)
+	discoveredProfile: function(url, relativeTo)
 	{
-		url = XFNDiscovery.normaliseURL(url);
+		url = XFNDiscovery.normaliseURL(url, relativeTo);
 
 		if(
 			url.match(/^http:\/\//) &&
@@ -99,7 +114,7 @@ var XFNDiscovery = {
 
 				for(var i = 0; i < links.length; i++)
 				{
-					XFNDiscovery.discoveredProfile(links[i].href);
+					XFNDiscovery.discoveredProfile(links[i].href, url);
 				}
 			}
 
