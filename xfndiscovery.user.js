@@ -23,6 +23,10 @@ var XFNDiscovery = {
 			}
 		});
 
+		var here = XFNDiscovery.normaliseURL(window.location.href);
+		if(XFNDiscovery.profiles.length > 0 && $.inArray(here, XFNDiscovery.profiles) == -1)
+			XFNDiscovery.profiles.push(here);
+
 		XFNDiscovery.UI.init();
 	},
 
