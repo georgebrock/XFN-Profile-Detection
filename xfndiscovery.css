@@ -1,5 +1,6 @@
 #xfn-discovery
 {
+	color:#000;
 	position: absolute;
 	z-index: 2000;
 	top: 0;
@@ -8,6 +9,27 @@
 	font-family: sans-serif;
 	font-size: small;
 	text-align:right;
+}
+
+#xfn-discovery *
+{
+	position:static;
+	border:none;
+	background:none;
+	padding:0;
+	margin:auto;
+	width:auto;
+	height:auto;
+	float:none;
+	clear:none;
+	text-align:left;
+	font-size: small;
+}
+
+#xfn-discovery a,
+#xfn-discovery span
+{
+	display:inline;
 }
 
 #xfn-discovery div.content
