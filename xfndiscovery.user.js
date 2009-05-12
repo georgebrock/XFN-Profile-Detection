@@ -510,8 +510,8 @@ XFNDiscovery.registerService(new XFNDiscovery.Service(
 
 XFNDiscovery.registerService(new XFNDiscovery.Service(
 	"97 Bottles",
-	/^http:\/\/((www|dev)\.)?97bottles.com\/people\/([^\/]+)\/?/, 3,
-	function(parts) { return "http://97bottles.com/people/"+parts[3].toLowerCase(); }
+	/^http:\/\/((www|dev)\.)?97bottles.com\/(people|users)\/([^\/]+)(\/[^\/]+)?\/?/, 4,
+	function(parts) { return "http://97bottles.com/people/"+parts[4].toLowerCase(); }
 	));
 
 XFNDiscovery.registerService(new XFNDiscovery.Service(
