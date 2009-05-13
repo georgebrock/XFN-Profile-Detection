@@ -63,8 +63,6 @@
 #xfn-discovery h5
 {
 	width:auto;
-	float:left;
-	clear:left;
 	font-size:1em;
 	margin:1em 0 0;
 	padding:0 1em;
@@ -82,14 +80,20 @@
 	cursor:pointer;
 }
 
-#xfn-discovery ul.profiles
+#xfn-discovery div.profiles-container
 {
 	margin:1em 0 0 0;
-	padding:0;
-	list-style:none;
 	width:25%;
 	float:left;
 	clear:left;
+	height:480px;
+	overflow:auto;
+}
+
+#xfn-discovery ul.profiles
+{
+	padding:0;
+	list-style:none;
 }
 
 #xfn-discovery ul.profiles a

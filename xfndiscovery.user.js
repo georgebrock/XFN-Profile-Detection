@@ -272,9 +272,12 @@ XFNDiscovery.UI = {
 				.append("<h4>More user profiles</h4>")
 				.append($iframe)
 				.append($iframeAlternative)
-				.append($profileList)
-				.append($unknownTitle)
-				.append($unknownProfileList);
+				.append(
+					$("<div></div>")
+						.addClass("profiles-container")
+						.append($profileList)
+						.append($unknownTitle)
+						.append($unknownProfileList));
 
 			for(var i = 0, p; i < XFNDiscovery.profiles.length; i++)
 			{
