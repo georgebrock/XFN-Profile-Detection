@@ -7,6 +7,24 @@
 // @resource      stylesheet http://georgebrock.com/openhack2009/xfndiscovery.css
 // ==/UserScript==
 
+$.jsonp = function(url, callback, error)
+{
+	var callbackName = "xfndiscovery" + new Date().getTime();
+
+	var timeout = unsafeWindow.setTimeout(function()
+	{
+		error();
+	}, 5000);
+
+	unsafeWindow[callbackName] = function(data)
+	{
+		unsafeWindow.clearInterval(timeout);
+		callback(data);
+	};
+
+	$.get(url+escape(callbackName), {}, function(){}, "jsonp");
+};
+
 var XFNDiscovery = {
 
 	profiles: [],
@@ -119,6 +137,11 @@ var XFNDiscovery = {
 			}
 
 			XFNDiscovery.crawlNextProfile();
+		},
+		function()
+		{
+			// Move on to the next URL on failure
+			XFNDiscovery.crawlNextProfile();
 		});
 	},
 
@@ -128,9 +151,9 @@ var XFNDiscovery = {
 		var sgURL =
 			"http://socialgraph.apis.google.com/lookup?edi=1&edo=0" +
 			"&q=" + escape(XFNDiscovery.crawledProfiles.join(",")) +
-			"&callback=" + escape(callbackName);
+			"&callback=";
 
-		unsafeWindow[callbackName] = function(data)
+		var success = function(data)
 		{
 			for(url in data.nodes)
 			{
@@ -160,7 +183,12 @@ var XFNDiscovery = {
 			}
 		};
 
-		$.get(sgURL, {}, function(){}, "jsonp");
+		var failure = function()
+		{
+			XFNDiscovery.UI.finishedDiscoveringMoreProfiles();
+		};
+
+		$.jsonp(sgURL, success, failure);
 	},
 
 	registerService: function(service)
@@ -189,11 +217,9 @@ var XFNDiscovery = {
 		return null;
 	},
 
-	queryYQL: function(query, callback)
+	queryYQL: function(query, callback, error)
 	{
-		var callbackName = "xfndiscovery" + new Date().getTime();
-		unsafeWindow[callbackName] = callback;
-		$.get("http://query.yahooapis.com/v1/public/yql?q="+escape(query)+"&format=json&callback="+escape(callbackName), {}, function(){}, "jsonp");
+		$.jsonp("http://query.yahooapis.com/v1/public/yql?q="+escape(query)+"&format=json&callback=", callback, error);
 	}
 
 };
