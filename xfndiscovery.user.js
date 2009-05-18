@@ -639,3 +639,9 @@ XFNDiscovery.registerService(new XFNDiscovery.Service(
 	/^http:\/\/([^\.]+)\.soup\.io\/?$/, 1,
 	function(parts) { return "http://" + parts[1].toLowerCase() + ".soup.io"; }
 	));
+
+XFNDiscovery.registerService(new XFNDiscovery.Service(
+	"Stack Overflow",
+	/^http:\/\/((www|beta)\.)?stackoverflow\.com\/users\/([0-9]+)\/([^\/]+)\/?/, 4,
+	function(parts) { return "http://stackoverflow.com/users/" + parts[3] + "/" + parts[4].toLowerCase(); }
+	));
