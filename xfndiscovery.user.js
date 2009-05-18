@@ -627,3 +627,9 @@ XFNDiscovery.registerService(new XFNDiscovery.Service(
 	/^http:\/\/live\.xbox\.com\/member\/([^\/]+)\/?$/, 1,
 	function(parts) { return "http://live.xbox.com/member/" + parts[1].toLowerCase(); }
 	));
+
+XFNDiscovery.registerService(new XFNDiscovery.Service(
+	"Tumblr",
+	/^http:\/\/([^\.]+)\.tumblr\.com\/?$/, 1,
+	function(parts) { return "http://" + parts[1].toLowerCase() + ".tumblr.com"; }
+	));
