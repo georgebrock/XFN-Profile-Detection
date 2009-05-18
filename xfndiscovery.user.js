@@ -633,3 +633,9 @@ XFNDiscovery.registerService(new XFNDiscovery.Service(
 	/^http:\/\/([^\.]+)\.tumblr\.com\/?$/, 1,
 	function(parts) { return "http://" + parts[1].toLowerCase() + ".tumblr.com"; }
 	));
+
+XFNDiscovery.registerService(new XFNDiscovery.Service(
+	"Soup.io",
+	/^http:\/\/([^\.]+)\.soup\.io\/?$/, 1,
+	function(parts) { return "http://" + parts[1].toLowerCase() + ".soup.io"; }
+	));
