@@ -7,6 +7,16 @@
 // @resource      stylesheet http://georgebrock.com/openhack2009/xfndiscovery.css
 // ==/UserScript==
 
+$(function()
+{
+	if(unsafeWindow.top != unsafeWindow)
+	{
+		return;
+	}
+
+	XFNDiscovery.init();
+});
+
 $.jsonp = function(url, callback, error)
 {
 	var callbackName = "xfndiscovery" + new Date().getTime();
@@ -410,16 +420,6 @@ XFNDiscovery.UI = {
 	}
 
 };
-
-$(function()
-{
-	if(unsafeWindow.top != unsafeWindow)
-	{
-		return;
-	}
-
-	XFNDiscovery.init();
-});
 
 XFNDiscovery.Service = function(name, urlPattern, usernamePart, canonicalGenerator, click)
 {
