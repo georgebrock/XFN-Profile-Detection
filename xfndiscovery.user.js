@@ -43,7 +43,7 @@ var XFNDiscovery = {
 			return;
 		}
 
-		$("[rel][href^=http]").each(function()
+		$(doc).find("[rel][href^=http]").each(function()
 		{
 			var rel = " " + $(this).attr("rel") + " ";
 			if(/ me /.exec(rel))
