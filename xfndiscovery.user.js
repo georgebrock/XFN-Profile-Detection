@@ -285,7 +285,7 @@ XFNDiscovery.UI = {
 					.append("<span class=\"count\">(0)</span>")
 					.click(function()
 					{
-						$("#xfn-discovery ul.profiles.unknown").slideToggle("slow");
+						XFNDiscovery.UI.$container.find("ul.profiles.unknown").slideToggle("slow");
 					})
 			);
 
@@ -323,14 +323,14 @@ XFNDiscovery.UI = {
 			$content.slideDown(function()
 			{
 				XFNDiscovery.discoverMoreProfiles();
-				$("#xfn-discovery a.trigger").html("Hide");
+				XFNDiscovery.UI.$container.find("a.trigger").html("Hide");
 			});
 		}
 		else
 		{
 			$content.slideToggle(function()
 			{
-				$("#xfn-discovery a.trigger").html($(this).css("display") == "none" ? "More user profiles" : "Hide");
+				XFNDiscovery.UI.$container.find("a.trigger").html($(this).css("display") == "none" ? "More user profiles" : "Hide");
 			});
 		}
 	},
@@ -376,8 +376,8 @@ XFNDiscovery.UI = {
 		{
 			$pLink.click(function()
 			{
-				$("#xfn-discovery div.iframe-alternative").hide();
-				$("#xfn-discovery iframe")
+				XFNDiscovery.UI.$container.find("div.iframe-alternative").hide();
+				XFNDiscovery.UI.$container.find("iframe")
 					.attr("src", "about:blank")
 					.show();
 				return true;
@@ -402,7 +402,7 @@ XFNDiscovery.UI = {
 				.fadeIn()
 		);
 
-		$("#xfn-discovery h5 span.count").html("(" + $("#xfn-discovery ul.profiles.unknown li").length + ")");
+		XFNDiscovery.UI.$container.find("h5 span.count").html("(" + XFNDiscovery.UI.$container.find("ul.profiles.unknown li").length + ")");
 	},
 
 	finishedDiscoveringMoreProfiles: function()
@@ -413,9 +413,9 @@ XFNDiscovery.UI = {
 				$(this).remove();
 			});
 
-		if($("#xfn-discovery ul.profiles.known li").length === 0)
+		if(XFNDiscovery.UI.$container.find("ul.profiles.known li").length === 0)
 		{
-			$("#xfn-discovery ul.profiles.unknown").show();
+			XFNDiscovery.UI.$container.find("ul.profiles.unknown").show();
 		}
 	}
 
@@ -470,8 +470,8 @@ XFNDiscovery.registerService(new XFNDiscovery.Service(
 			var content = "<p>Unfortunately Twitter doesn't like to be embedded in another page.</p>" +
 				"<p><a href=\""+url+"\" target=\"_blank\">Open this Twitter profile in a new window.</a></p>";
 
-			$("#xfn-discovery iframe").hide();
-			$("#xfn-discovery div.iframe-alternative")
+			XFNDiscovery.UI.$container.find("iframe").hide();
+			XFNDiscovery.UI.$container.find("div.iframe-alternative")
 				.find("div.inner").html(content).end()
 				.show();
 			return false;
