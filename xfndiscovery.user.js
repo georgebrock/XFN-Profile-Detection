@@ -14,7 +14,7 @@ $(function()
 		return;
 	}
 
-	XFNDiscovery.init();
+	XFNDiscovery.init(document);
 });
 
 $.jsonp = function(url, callback, error)
@@ -41,18 +41,18 @@ var XFNDiscovery = {
 	services: [],
 	serviceURLMap: {},
 
-	init: function()
+	init: function(doc)
 	{
 		$("[rel][href^=http]").each(function()
 		{
 			var rel = " " + $(this).attr("rel") + " ";
 			if(/ me /.exec(rel))
 			{
-				XFNDiscovery.profiles.push(XFNDiscovery.normaliseURL($(this).attr("href"), window.location.href));
+				XFNDiscovery.profiles.push(XFNDiscovery.normaliseURL($(this).attr("href"), doc.location.href));
 			}
 		});
 
-		var here = XFNDiscovery.normaliseURL(window.location.href);
+		var here = XFNDiscovery.normaliseURL(doc.location.href);
 		if(XFNDiscovery.profiles.length > 0 && $.inArray(here, XFNDiscovery.profiles) == -1)
 			XFNDiscovery.profiles.push(here);
 
