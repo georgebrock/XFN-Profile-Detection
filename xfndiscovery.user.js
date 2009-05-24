@@ -9,7 +9,7 @@
 
 $(function()
 {
-	if(unsafeWindow.top != unsafeWindow)
+	if(document.defaultView.top != document.defaultView)
 	{
 		return;
 	}
