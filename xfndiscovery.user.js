@@ -56,7 +56,7 @@ var XFNDiscovery = {
 		if(XFNDiscovery.profiles.length > 0 && $.inArray(here, XFNDiscovery.profiles) == -1)
 			XFNDiscovery.profiles.push(here);
 
-		XFNDiscovery.UI.init();
+		XFNDiscovery.UI.init(doc);
 	},
 
 	discoverMoreProfiles: function()
@@ -236,14 +236,14 @@ var XFNDiscovery = {
 
 XFNDiscovery.UI = {
 
-	init: function()
+	init: function(doc)
 	{
 		if(XFNDiscovery.profiles.length === 0)
 		{
 			return;
 		}
 
-		$("head").append(
+		$(doc).find("head").append(
 			$("<link/>")
 				.attr("rel", "stylesheet")
 				.attr("type", "text/css")
@@ -264,7 +264,7 @@ XFNDiscovery.UI = {
 					.click(XFNDiscovery.UI.trigger)
 				);
 
-		$("body").append(XFNDiscovery.UI.$container);
+		$(doc).find("body").append(XFNDiscovery.UI.$container);
 	},
 
 	trigger: function()
