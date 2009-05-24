@@ -9,11 +9,6 @@
 
 $(function()
 {
-	if(document.defaultView.top != document.defaultView)
-	{
-		return;
-	}
-
 	XFNDiscovery.init(document);
 });
 
@@ -43,6 +38,11 @@ var XFNDiscovery = {
 
 	init: function(doc)
 	{
+		if(doc.defaultView.top != doc.defaultView)
+		{
+			return;
+		}
+
 		$("[rel][href^=http]").each(function()
 		{
 			var rel = " " + $(this).attr("rel") + " ";
