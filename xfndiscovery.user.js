@@ -7,10 +7,21 @@
 // @resource      stylesheet http://georgebrock.com/openhack2009/xfndiscovery.css
 // ==/UserScript==
 
-$(function()
-{
-	XFNDiscovery.init(document);
-});
+
+if(typeof(jetpack) == "object")
+{	// Jetpack initialisation
+	jetpack.tabs.onReady(function(doc)
+	{
+		XFNDiscovery.init(doc);
+	});
+}
+else
+{	// Greasemonkey or embedded initialisation
+	$(function()
+	{
+		XFNDiscovery.init(document);
+	});
+}
 
 $.jsonp = function(url, callback, error)
 {
