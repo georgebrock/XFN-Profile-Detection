@@ -14,32 +14,51 @@ if(typeof(jetpack) == "object")
 	{
 		XFNDiscovery.init(doc);
 	});
+
+	$.jsonp = function(url, callback, error)
+	{
+		var callbackName = "xfndiscovery" + new Date().getTime();
+
+		var timeout = setTimeout(function()
+		{
+			error();
+		}, 5000);
+
+//FIXME: The function's source is being passed as the callback name
+		var fullCallback = function(data)
+		{
+			clearTimeout(timeout);
+			callback(data);
+		};
+
+		$.get(url+"?", {}, fullCallback, "jsonp");
+	};
 }
 else
-{	// Greasemonkey or embedded initialisation
+{	// Greasemonkey initialisation
 	$(function()
 	{
 		XFNDiscovery.init(document);
 	});
-}
 
-$.jsonp = function(url, callback, error)
-{
-	var callbackName = "xfndiscovery" + new Date().getTime();
-
-	var timeout = unsafeWindow.setTimeout(function()
+	$.jsonp = function(url, callback, error)
 	{
-		error();
-	}, 5000);
+		var callbackName = "xfndiscovery" + new Date().getTime();
 
-	unsafeWindow[callbackName] = function(data)
-	{
-		unsafeWindow.clearInterval(timeout);
-		callback(data);
+		var timeout = unsafeWindow.setTimeout(function()
+		{
+			error();
+		}, 5000);
+
+		unsafeWindow[callbackName] = function(data)
+		{
+			unsafeWindow.clearTimeout(timeout);
+			callback(data);
+		};
+
+		$.get(url+escape(callbackName), {}, function(){}, "jsonp");
 	};
-
-	$.get(url+escape(callbackName), {}, function(){}, "jsonp");
-};
+}
 
 var XFNDiscovery = {
 
